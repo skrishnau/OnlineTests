@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/paper', [PaperController::class, 'index']);
+Route::get('/paper/create', [PaperController::class, 'create']);
+Route::post('/paper/store', [PaperController::class, 'store']);
+Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
+
+//Route::get('/paper', 'App\Http\Controllers\PaperController@index');
