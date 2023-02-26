@@ -8,6 +8,9 @@
         <div class="col-md-12">
 
             <h3>Question Papers</h3>
+            <div>
+                <a href="{{route('paper.create')}}" class="btn btn-primary">Add New Question Paper</a>
+            </div>
             <div class="box box-info clearfix pad ">
                 <table class="table table-bordered table-hover">
                     <tr>
@@ -28,7 +31,7 @@
                                 {{$item->durationInMins}}
                             </td>
                             <td>
-                                <a href="{{route('paper.show', ['id' => $item->id])}}">Open</a>
+                                <a href="{{route('paper.show', ['id' => $item->id])}}">View</a>
                             </td>
                         </tr>
                     @endforeach

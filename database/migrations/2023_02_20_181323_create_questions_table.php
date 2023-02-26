@@ -18,6 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('paper_id');
             $table->foreign('paper_id')->references('id')->on('papers');
 
+            $table->smallInteger('serial_number');
             $table->longText('description'); // question description
             $table->smallInteger('type'); // if '1' then answers is given as multi-choice select, else if '2' then answers will be written as text
             $table->string('tag', 20)->nullable(); // for searches only

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaperController;
+use App\Http\Controllers\QuestionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +19,11 @@ use App\Http\Controllers\PaperController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/paper', [PaperController::class, 'index']);
-Route::get('/paper/create', [PaperController::class, 'create']);
-Route::post('/paper/store', [PaperController::class, 'store']);
+Route::get('/paper', [PaperController::class, 'index'])->name('paper.index');
+Route::get('/paper/create', [PaperController::class, 'create'])->name('paper.create');
+Route::post('/paper/store', [PaperController::class, 'store'])->name('paper.store');
 Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
+
+Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

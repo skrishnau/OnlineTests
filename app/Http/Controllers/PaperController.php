@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Paper;
+use App\Models\Question;
+
 
 class PaperController extends Controller
 {
@@ -18,32 +20,19 @@ class PaperController extends Controller
         return view('paper.index', compact('papers'));
     }
     
-    public function show(Paper $paper)
+    public function show($id)//Paper $paper
     {
-        //
-        var_dump($paper);
+        $paper = Paper::first();
+        $questions = Question::where('paper_id', $paper->id)
+            ->orderBy('serial_number', 'asc')
+            ->select('serial_number as serialNumber')->get();
+        return view('paper.show', compact('paper', 'questions'));
     }
 
 
     public function create()
     {
         return view('paper.create');
-        //
-        // $name = $request->query('name');
-
-        // if($name) {
-        //     $terminal = Terminal::find($terminalId);
-        //     $subject = Subject::find($subjectId);
-        //     $academicYears = AcademicYear::orderBy('start_date', 'desc')->get();
-        //     $subjectSyllabi = SubjectSyllabus::where(['terminal_id'=>$terminalId, 'subject_id'=>$subjectId])->get();
-        //     $sets = Set::get();
-        //     $schools = School::get();
-        //     return view('question_paper.create', compact('sets', 'terminal', 'subject', 'academicYears', 'subjectSyllabi', 'schools'));
-
-        // } else {
-        //     return redirect()->route("home");
-        // }
-        
     }
 
     public function store(Request $request)
@@ -66,13 +55,7 @@ class PaperController extends Controller
                         ->withInput();
         }
         $paper = Paper::create([
-            "name" => $data["name"],
-            // "academic_year_id" => $data["academic_year_id"],
-            // "set_id" => $data["set_id"],
-            // "school_id" => $data["school_id"],
-            // "exam_date" => $data["exam_date"],
-            // "full_marks" => $data["full_marks"],
-            // "pass_marks" => $data["pass_marks"]
+            "name" => $data["name"]
         ]);
 
         return redirect()->route('paper.show', $paper->id);
