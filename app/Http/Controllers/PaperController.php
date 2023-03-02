@@ -22,7 +22,7 @@ class PaperController extends Controller
     
     public function show($id)//Paper $paper
     {
-        $paper = Paper::first();
+        $paper = Paper::where('id', $id)->first();
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->select('serial_number as serialNumber')->get();
