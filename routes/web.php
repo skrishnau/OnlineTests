@@ -25,5 +25,6 @@ Route::post('/paper/store', [PaperController::class, 'store'])->name('paper.stor
 Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
 
 Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
+Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

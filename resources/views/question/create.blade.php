@@ -32,36 +32,7 @@
                 <form id="questionCreateForm" action="/paper/store" method="POST">
                     @csrf
 
-                    <div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }} clearfix">
-                        <label for="tag" class="col-sm-4 control-label">Tag</label>
-
-                        <div class="col-sm-8">
-                            <input id="tag" type="text" class="form-control" name="tag" value="{{ old('tag') }}" required
-                                autofocus autocomplete="on">
-
-                            @if ($errors->has('tag'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('tag') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
-                        <label for="group" class="col-sm-4 control-label">Group</label>
-
-                        <div class="col-sm-8">
-                            <input id="group" type="text" class="form-control" name="group" value="{{ old('group') }}" required
-                                autofocus autocomplete="off">
-
-                            @if ($errors->has('group'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('group') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
-                    </div>
-
+                    
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
                         <label for="type" class="col-sm-4 control-label">Answer Type</label>
 
@@ -79,16 +50,48 @@
                         </div>
                     </div>
 
+                    <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
+                        <label for="group" class="col-sm-4 control-label">Group</label>
+
+                        <div class="col-sm-8">
+                            <input id="group" type="text" class="form-control" name="group" value="{{ old('group') }}" 
+                                autofocus autocomplete="off">
+
+                            @if ($errors->has('group'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('group') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }} clearfix">
+                        <label for="tag" class="col-sm-4 control-label">Tag</label>
+
+                        <div class="col-sm-8">
+                            <input id="tag" type="text" class="form-control" name="tag" value="{{ old('tag') }}"
+                                autofocus autocomplete="on">
+
+                            @if ($errors->has('tag'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('tag') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                    </div>
+
+
+
                      <h4>Question</h4>
                     <div id="container">
-                        <div id="editorQuestion">
-                        </div>
+                        <textarea id="editorQuestion">
+                        </textarea>
                     </div>
                  
 
-                    <table id="answerTable" class="table" >
+                    <table id="optionTable" class="table" >
                         <tr>
-                            <th><h4>Answers</h4></th>
+                            <th><h4>Option Text</h4></th>
                             <th>Is Correct?</th>
                             <th>Actions</th>
                         </tr>
@@ -107,25 +110,26 @@
 
                 {{-- Template for option --}}
                 <table id="optionTemplate" style="display:none;">
-                    <tr class="answerSection">
+                    <tr class="optionSection">
                         <td>
                             <div>
-                                <div class="editorAnswer">
+                                <div class="editorOption">
                                 </div>
                             </div>
                         </td>
 
                         <td>
                             <div>
-                                <select type="text" class="form-control" name="type" required>
+                                <select type="text" class="isCorrect form-control" name="type" required>
                                     <option value="no">No</option>
                                     <option value="yes">Yes</option>
                                 </select>
                             </div>
                         </td>
                         <td>
-                            <button class="moveUp btn btn-primary " type="button">Move Up</button>
-                            <button class="moveDown btn btn-primary " type="button">Move Down</button>
+                            <button class="moveUp btn btn-primary" type="button" title="Move UP">↑</button>
+                            <button class="moveDown btn btn-primary" type="button" title="Move DOWN">↓</button>
+                            <button class="remove btn btn-danger" type="button" title="DELETE">X</button>
                         </td>
                     </tr>
                 </div>

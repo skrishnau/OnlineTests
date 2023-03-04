@@ -16,9 +16,10 @@ class QuestionController extends Controller
         return view('question.create', compact('paper'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        
+
+        return $request;
 
     }
 }
