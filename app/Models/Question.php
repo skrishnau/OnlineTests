@@ -9,7 +9,9 @@ class Question extends Model
 {
     use HasFactory;
 
-    public function questions() {
-    	return $this->hasMany(\App\Model\Option::class);
+    protected $fillable = ['paper_id', 'serial_number', 'description', 'type', 'tag', 'group']; //'id', 
+
+    public function options() {
+    	return $this->hasMany(\App\Models\Option::class);
     }
 }

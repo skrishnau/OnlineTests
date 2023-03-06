@@ -25,7 +25,7 @@ class PaperController extends Controller
         $paper = Paper::where('id', $id)->first();
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
-            ->select('serial_number as serialNumber')->get();
+            ->get();
         return view('paper.show', compact('paper', 'questions'));
     }
 
@@ -38,15 +38,8 @@ class PaperController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // $isValid = true;
-        // if(!$data['name']){
-        //     $isValid = false;
-        // }
-        //$isValid = !$validator->fails();
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:papers|max:255',
-            //'body' => 'required',
         ]);
 
         if($validator->fails()){

@@ -31,7 +31,8 @@
             <div class="box box-info clearfix pad ">
                 <form id="questionCreateForm" action="/paper/store" method="POST">
                     @csrf
-
+                    <input type="hidden" id="paperId" name="paperId" value="{{$paper->id}}" />
+                    <input type="hidden" id="id" name="id" value="{{$question?$question->id:0}}" /> 
                     
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
                         <label for="type" class="col-sm-4 control-label">Answer Type</label>
@@ -84,8 +85,7 @@
 
                      <h4>Question</h4>
                     <div id="container">
-                        <textarea id="editorQuestion">
-                        </textarea>
+                        <textarea id="editorQuestion"></textarea>
                     </div>
                  
 
@@ -113,8 +113,8 @@
                     <tr class="optionSection">
                         <td>
                             <div>
-                                <div class="editorOption">
-                                </div>
+                                <input type="hidden" name="id" class="optionId" value="0"/>
+                                <div class="editorOption"></div>
                             </div>
                         </td>
 
@@ -132,7 +132,7 @@
                             <button class="remove btn btn-danger" type="button" title="DELETE">X</button>
                         </td>
                     </tr>
-                </div>
+                </table>
             </div>
         </div> 
 
