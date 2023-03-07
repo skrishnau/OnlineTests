@@ -63,6 +63,7 @@ function addQuestion(){
 }
 function saveQuestion(e){
     e.preventDefault();
+    blockWindow();
     const $form = $(this);
     const id = $form.find("#id")?.val();
     const paperId = $form.find("#paperId")?.val();
@@ -96,13 +97,16 @@ function saveQuestion(e){
         "options": options
     };
 
-    console.log(data);
+    // console.log(data);
     //disableAllButtons(e.target);
     $.post("/question/store", (data), function(response){
         enableAllButtons(e.target);
+        unblockWindow();
+        notify(response.status, response.message);
         if(response.status == 'error'){
             // show error message
+        } else {
+            window.location = ("/paper/show/" + paperId);
         }
-        window.location("/paper/show/" + paperId);
     });
 }

@@ -7,7 +7,11 @@
 @section('content')
         <div class="col-md-8">
 
-            <h3>Create Question Paper</h3>
+            <div>
+                <h3 class="float-start">Create Question Paper</h3>
+                <div class="clearfix"></div>
+            </div>
+
             <div class="box box-info clearfix pad ">
                 <form action="/paper/store" method="POST">
                     {{-- {!! Form::open(array('route'=>'paper.store' ))!!} --}}
@@ -28,8 +32,8 @@
                     </div>
                     <div class="clearfix pad"></div>
                     <div align="right">
-                        <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                        <a type="button" class="btn btn-sm btn-warning" href="/">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a type="button" class="btn btn-warning" href="/">Cancel</a>
                     </div>
                 </form>
             </div>

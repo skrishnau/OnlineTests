@@ -1,4 +1,12 @@
 
+function initializeClassicEditor(id){
+    return ClassicEditor
+        .create( document.querySelector( '#'+id ) )
+        .catch( error => {
+            console.error( error );
+        } );
+}
+
 function initializeEditor(id){
 
     // This sample still does not showcase all CKEditor 5 features (!)

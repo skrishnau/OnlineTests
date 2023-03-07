@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ExamController;
 
 
 /*
@@ -26,5 +27,8 @@ Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.sh
 
 Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
 Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
+
+Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
+Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

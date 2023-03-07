@@ -8,6 +8,10 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    // setTimeout(() => {
+    //     unblockWindow();
+    // }, 500); 
 });
 
 
@@ -21,4 +25,16 @@ function disableAllButtons(container){
 
 function enableAllButtons(container){
     $(container).find("button, a").attr("disabled", false);
+}
+
+function blockWindow(){
+    $(".loadingBackground").show();
+}
+
+function unblockWindow(){
+    $(".loadingBackground").hide();
+}
+
+function notify(status, message){
+    $.notify(message, status);
 }

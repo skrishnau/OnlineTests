@@ -103,8 +103,8 @@
 
                     <div class="clearfix pad"></div>
                     <div align="right">
-                        <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                        <a type="button" class="btn btn-sm btn-warning" href="/">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a type="button" class="btn btn-warning" href="/">Cancel</a>
                     </div>
                 </form>
 

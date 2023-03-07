@@ -59,8 +59,10 @@ class QuestionController extends Controller
                 );
             }
         }
-
-        return $request;
-
+        return response()->json([
+            'status' => 'success',
+            'message' => "Saved successfully!"
+        ]);
     }
+
 }
