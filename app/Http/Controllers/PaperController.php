@@ -50,8 +50,8 @@ class PaperController extends Controller
         $paper = Paper::create([
             "name" => $data["name"]
         ]);
-
-        return redirect()->route('paper.show', $paper->id);
+        // return redirect()->route('paper.show', $paper->id);
+        return redirect()->route('paper.index');
     }
 
     public function edit(Algorithm $algorithm)

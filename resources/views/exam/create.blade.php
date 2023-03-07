@@ -6,7 +6,8 @@
 
 @section('content')
         <div class="col-md-12">
-
+            {{-- to block the window (show loading icon) on page load. need to ublock from js after document.ready--}}
+            <?php $blockWindow = true;?>
             <h3>{{$paper['name']}}</h3>
             <div class="box box-info float-none pad ">
                 <div class="col-md-12">
@@ -53,8 +54,16 @@
 @endsection
 
 @section('scripts')
-        {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script> --}}
-        <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-        <script src="{{asset("js/ckeditorconfig.js")}}"></script>
-        <script src="{{asset("js/examcreate.js")}}"></script>
+    <script>
+        $(document).ready(function(){
+            blockWindow();
+            setTimeout(() => {
+                unblockWindow();
+            }, 1000);
+        })
+    </script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script src="{{asset("js/ckeditorconfig.js")}}"></script>
+    <script src="{{asset("js/examcreate.js")}}"></script>
 @endsection

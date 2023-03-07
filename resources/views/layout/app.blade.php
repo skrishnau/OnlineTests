@@ -38,7 +38,7 @@
 
 {{-- Navbar here ? --}}
             {{-- @include('layout.navbar') --}}
-    <div class="loadingBackground" style="display:none;background-color:rgba(54, 51, 47, 0.5); position:fixed; left:0; top:0;z-index:1000; width:100%; height:100%;">
+    <div class="loadingBackground" style="{{isset($blockWindow) && $blockWindow ? "" : "display:none;"}} background-color:rgba(54, 51, 47, 0.5); position:fixed; left:0; top:0;z-index:1000; width:100%; height:100%;">
         {{-- style="position: fixed;  height:100%; width:100%;text-align:center;" --}}
         <div class="loader" style="position:fixed; left:45%; top:45%; z-index:1000;"></div> 
     </div>

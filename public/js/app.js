@@ -35,6 +35,7 @@ function unblockWindow(){
     $(".loadingBackground").hide();
 }
 
+// https://notifyjs.jpillora.com/
 function notify(status, message){
     $.notify(message, status);
 }
