@@ -52,8 +52,14 @@
                                         @endforeach
                                     </div>
                                 </td>
-                                <td class="" style="width:100px;">
-                                    <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-primary editQuestion">Edit</a>
+                                <td class="" style="width:200px;">
+                                    <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-primary editQuestion" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
+                                    <button class="moveUp btn btn-primary" type="button" title="Move UP">↑</button>
+                                    <button class="moveDown btn btn-primary" type="button" title="Move DOWN">↓</button>
+                                    <button class="remove btn btn-danger" type="button" title="DELETE">X</button>
                                 </td>
                             </tr>
                         @endforeach
