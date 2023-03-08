@@ -8,11 +8,11 @@
         <div class="col-md-8">
 
             <div>
-                <h3 class="float-start">Create Question Paper</h3>
+                <h3 class="float-start">{{isset($paper)? "Edit" : "Create"}} Question Paper</h3>
                 <div class="clearfix"></div>
             </div>
 
-            <div class="box box-info clearfix pad ">
+            <div class="box box-info clearfix pad mt-4">
                 <form action="/paper/store" method="POST">
                     {{-- {!! Form::open(array('route'=>'paper.store' ))!!} --}}
                     @csrf
@@ -20,7 +20,7 @@
                         <label for="name" class="col-sm-4 control-label">Name</label>
 
                         <div class="col-sm-8">
-                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required
+                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name', $paper?->name) }}" required
                                 autofocus autocomplete="off">
 
                             @if ($errors->has('name'))
@@ -33,7 +33,7 @@
                     <div class="clearfix pad"></div>
                     <div align="right">
                         <button type="submit" class="btn btn-primary">Save</button>
-                        <a type="button" class="btn btn-warning" href="/">Cancel</a>
+                        <a type="button" class="btn btn-warning" href="{{$paper ? route("paper.show", $paper->id) : route("paper.index")}}">Cancel</a>
                     </div>
                 </form>
             </div>

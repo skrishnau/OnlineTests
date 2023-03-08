@@ -32,7 +32,8 @@ class PaperController extends Controller
 
     public function create()
     {
-        return view('paper.create');
+        $paper = null;
+        return view('paper.create', compact('paper'));
     }
 
     public function store(Request $request)
@@ -54,14 +55,20 @@ class PaperController extends Controller
         return redirect()->route('paper.index');
     }
 
-    public function edit(Algorithm $algorithm)
+    public function edit($id)
     {
-        //
+        $paper = Paper::find($id);
+        if($paper) {
+            return view('paper.create', compact('paper'));
+        } else {
+            $message = "Not found!";
+            return view('layout.error', compact('message'));
+        }
     }
 
     public function update(Request $request, Algorithm $algorithm)
     {
-        //
+       
     }
 
     public function destroy(Algorithm $algorithm)

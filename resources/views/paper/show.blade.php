@@ -8,6 +8,9 @@
         <div class="col-md-12">
             <div>
                 <h3 class="float-start">{{$paper['name']}}</h3>
+                <div class="float-start">
+                    <a type="button" href="{{route('paper.edit', ['id'=> $paper->id])}}" class="btn btn-primary addQuestion">Edit</a>
+                </div>
                 <div class="float-end">
                     <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">Add New Question</a>
                     <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id])}}" class="btn btn-primary">Preview</a>

@@ -22,6 +22,7 @@ Route::get('/', function () {
 });
 Route::get('/paper', [PaperController::class, 'index'])->name('paper.index');
 Route::get('/paper/create', [PaperController::class, 'create'])->name('paper.create');
+Route::get('/paper/edit/{id}', [PaperController::class, 'edit'])->name('paper.edit');
 Route::post('/paper/store', [PaperController::class, 'store'])->name('paper.store');
 Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
 
