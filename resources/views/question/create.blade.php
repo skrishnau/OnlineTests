@@ -23,123 +23,116 @@
 @endsection
 
 @section('content')
-         <div class="col-md-12">
+    <?php $blockWindow = true;?>
+        <div class="col-md-12">
 
-            <h4>Paper: {{$paper->name}}</h4>
+        <h4>Paper: {{$paper->name}}</h4>
 
-            <h3>Create Question</h3>
-            <div class="box box-info clearfix pad ">
-                <form id="questionCreateForm" action="/paper/store" method="POST">
-                    @csrf
-                    <input type="hidden" id="paperId" name="paperId" value="{{$paper->id}}" />
-                    <input type="hidden" id="id" name="id" value="{{$question?$question->id:0}}" /> 
-                    
-                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
-                        <label for="type" class="col-sm-4 control-label">Answer Type</label>
+        <h3>Create Question</h3>
+        <div class="box box-info clearfix pad ">
+            <form id="questionCreateForm" action="/paper/store" method="POST">
+                @csrf
+                <input type="hidden" id="paperId" name="paperId" value="{{$paper->id}}" />
+                <input type="hidden" id="id" name="id" value="{{$question?$question->id:0}}" /> 
+                
+                <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
+                    <label for="type" class="col-sm-4 control-label">Answer Type</label>
 
-                        <div class="col-sm-8">
-                            <select id="type" type="text" class="form-control" name="type" value="{{ old('type') }}" required autofocus autocomplete="off">
-                                <option value="1">Multi Choice</option>
-                                <option value="2">Text Answer</option>
-                            </select>
+                    <div class="col-sm-8">
+                        <select id="type" type="text" class="form-control" name="type" value="{{ old('type') }}" required autofocus autocomplete="off">
+                            <option value="1">Multi Choice</option>
+                            <option value="2">Text Answer</option>
+                        </select>
 
-                            @if ($errors->has('type'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('type') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
+                        @if ($errors->has('type'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('type') }}</strong>
+                                    </span>
+                        @endif
                     </div>
+                </div>
 
-                    <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
-                        <label for="group" class="col-sm-4 control-label">Group</label>
+                <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
+                    <label for="group" class="col-sm-4 control-label">Group</label>
 
-                        <div class="col-sm-8">
-                            <input id="group" type="text" class="form-control" name="group" value="{{ old('group') }}" 
-                                autofocus autocomplete="off">
+                    <div class="col-sm-8">
+                        <input id="group" type="text" class="form-control" name="group" value="{{ old('group') }}" 
+                            autofocus autocomplete="off">
 
-                            @if ($errors->has('group'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('group') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
+                        @if ($errors->has('group'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('group') }}</strong>
+                                    </span>
+                        @endif
                     </div>
+                </div>
 
-                    <div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }} clearfix">
-                        <label for="tag" class="col-sm-4 control-label">Tag</label>
+                <div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }} clearfix">
+                    <label for="tag" class="col-sm-4 control-label">Tag</label>
 
-                        <div class="col-sm-8">
-                            <input id="tag" type="text" class="form-control" name="tag" value="{{ old('tag') }}"
-                                autofocus autocomplete="on">
+                    <div class="col-sm-8">
+                        <input id="tag" type="text" class="form-control" name="tag" value="{{ old('tag') }}"
+                            autofocus autocomplete="on">
 
-                            @if ($errors->has('tag'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('tag') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
+                        @if ($errors->has('tag'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('tag') }}</strong>
+                                    </span>
+                        @endif
                     </div>
+                </div>
 
+                <h4 class="mt-3">Question</h4>
+                <div id="container">
+                    <textarea id="editorQuestion"></textarea>
+                </div>
 
-
-                     <h4>Question</h4>
-                    <div id="container">
-                        <textarea id="editorQuestion"></textarea>
-                    </div>
-                 
-
-                    <table id="optionTable" class="table" >
-                        <tr>
-                            <th><h4>Option Text</h4></th>
-                            <th>Is Correct?</th>
-                            <th>Actions</th>
-                        </tr>
-                        
-                    </table>
-                    <div>
-                        <button id="addOption" type="button" class="btn btn-primary">Add Option</button>
-                    </div>
-
-                    <div class="clearfix pad"></div>
-                    <div align="right">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a type="button" class="btn btn-warning" href="/">Cancel</a>
-                    </div>
-                </form>
-
-                {{-- Template for option --}}
-                <table id="optionTemplate" style="display:none;">
-                    <tr class="optionSection">
-                        <td>
-                            <div>
-                                <input type="hidden" name="id" class="optionId" value="0"/>
-                                <div class="editorOption"></div>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div>
-                                <select type="text" class="isCorrect form-control" name="type" required>
-                                    <option value="no">No</option>
-                                    <option value="yes">Yes</option>
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="moveUp btn btn-primary" type="button" title="Move UP">↑</button>
-                            <button class="moveDown btn btn-primary" type="button" title="Move DOWN">↓</button>
-                            <button class="remove btn btn-danger" type="button" title="DELETE">X</button>
-                        </td>
+                <table id="optionTable" class="table" >
+                    <tr>
+                        <th><h4>Option Text</h4></th>
+                        <th>Is Correct?</th>
+                        <th>Actions</th>
                     </tr>
+                    
                 </table>
-            </div>
-        </div> 
+                <div>
+                    <button id="addOption" type="button" class="btn btn-primary">Add Option</button>
+                </div>
 
-       
+                <div class="clearfix pad"></div>
+                <div align="right">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a type="button" class="btn btn-warning" href="/">Cancel</a>
+                </div>
+            </form>
 
-        
-       
+            {{-- Template for option --}}
+            <table id="optionTemplate" style="display:none;">
+                <tr class="optionSection">
+                    <td>
+                        <div>
+                            <input type="hidden" name="id" class="optionId" value="0"/>
+                            <div class="editorOption"></div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>
+                            <select type="text" class="isCorrect form-control" name="type" required>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="moveUp btn btn-primary" type="button" title="Move UP">↑</button>
+                        <button class="moveDown btn btn-primary" type="button" title="Move DOWN">↓</button>
+                        <button class="remove btn btn-danger" type="button" title="DELETE">X</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
 @endsection
 
 

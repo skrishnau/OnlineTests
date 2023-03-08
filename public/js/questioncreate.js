@@ -7,6 +7,10 @@ $(document).ready(function(){
     initializeEditor("editorQuestion")
         .then(editor => {
             questionEditor = editor;
+            // -- hide  loading gif after  a second -- //
+            unblockWindow();
+            // -- end of hide loading fig -------------//
+
         });
 
     initializeMoveOptionButtons();

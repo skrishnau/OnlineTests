@@ -55,12 +55,7 @@
 
 @section('scripts')
     <script>
-        $(document).ready(function(){
-            blockWindow();
-            setTimeout(() => {
-                unblockWindow();
-            }, 1000);
-        })
+        
     </script>
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
