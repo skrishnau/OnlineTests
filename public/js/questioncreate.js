@@ -104,10 +104,12 @@ function saveQuestion(e){
             const optionId = $(value).find(".id")?.val() ?? 0;
             const text = optionEditors[editorId].getData();//CKEDITOR.instances[editorId].getData();
             const isCorrect =  $(value).find(".isCorrect").val();
+            const serialNumber = $(value).find(".serialNumber").val();
             let answer = {
                 "id": optionId,
                 "description": text,
-                "isCorrect": isCorrect
+                "isCorrect": isCorrect,
+                "serialNumber": serialNumber
             };
             options.push(answer);
         }

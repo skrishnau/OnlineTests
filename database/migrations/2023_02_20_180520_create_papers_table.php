@@ -18,7 +18,7 @@ class CreatePapersTable extends Migration
             $table->string("name"); // e.g. 3rd Semester; 2022BatchFall, 1stBatch3rdTerm, etc
             $table->dateTime('start_datetime')->nullable();
             $table->smallInteger('duration_in_mins')->nullable();
-            $table->string('link_url')->nullable(); // generated url for the paper examination to be given to students
+            $table->string('link_id')->nullable(); // generated id for the paper examination to be given to students
             $table->timestamps();
         });
     }

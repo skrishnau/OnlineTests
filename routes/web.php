@@ -25,6 +25,7 @@ Route::get('/paper/create', [PaperController::class, 'create'])->name('paper.cre
 Route::get('/paper/edit/{id}', [PaperController::class, 'edit'])->name('paper.edit');
 Route::post('/paper/store', [PaperController::class, 'store'])->name('paper.store');
 Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
+Route::post('/paper/startTest', [PaperController::class, 'startTest'])->name('paper.startTest');
 
 Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
 Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
