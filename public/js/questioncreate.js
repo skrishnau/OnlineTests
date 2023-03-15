@@ -32,6 +32,11 @@ function moveUp(){
     var $currentRow = $(this).closest("tr.optionSection");
     var prev = $currentRow.prev(".optionSection");
     if(prev){
+        var curSN = $currentRow.find(".serialNumber").val();
+        var prevSN = prev.find(".serialNumber").val();
+        $currentRow.find(".serialNumber").val(prevSN);
+        prev.find(".serialNumber").val(curSN);
+
         $(prev).before($currentRow);
     }
 }
@@ -40,11 +45,24 @@ function moveDown(){
     var $currentRow = $(this).closest("tr.optionSection");
     var next = $currentRow.next(".optionSection");
     if(next){
+        var curSN = $currentRow.find(".serialNumber").val();
+        var nextSN = next.find(".serialNumber").val();
+        $currentRow.find(".serialNumber").val(nextSN);
+        next.find(".serialNumber").val(curSN);
+
         $(next).after($currentRow);
     }
 }
 
 function remove(){
+    var curSN = $(this).closest("tr.optionSection").find(".serialNumber").val();
+    var next = $(this).closest("tr.optionSection").next(".optionSection");
+    while(next.length > 0){
+        let tempSN = next.find(".serialNumber").val();
+        next.find(".serialNumber").val(curSN);
+        curSN = tempSN;
+        next = next.next(".optionSection");
+    }
     var $currentRow = $(this).closest("tr.optionSection").remove();
 }
 function addQuestion(){
@@ -56,6 +74,10 @@ function addQuestion(){
     let id = EDITOR_OPTION + (lastId + 1);
     $(clone).find("." + EDITOR_OPTION).prop("id", id);
     $(clone).find("." + EDITOR_OPTION).attr("data-id", lastId + 1);
+
+    // serial Number
+    $("#optionTable .optionSection:last-child").find("")
+
     $("#optionTable").append(clone);
     
     initializeMoveOptionButtons();

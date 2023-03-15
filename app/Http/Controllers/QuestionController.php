@@ -35,18 +35,21 @@ class QuestionController extends Controller
             ]);
         }
         $isEdit = $data['id'] ? $data['id'] == '0' ? false : true : false;
-        
+
         $question = Question::updateOrCreate(
             ['id' => $data['id']],
             [
                 'description' => $data['description'],
-                'serial_number' => 1,
                 'type' => $data['type'],
                 'tag' => $data['tag'],
                 'group' => $data['group'],
                 'paper_id' => $data['paperId'],
             ]
         );
+        if(!$isEdit){
+            $question->serial_number = Question::where('paper_id', $data['paperId'])->max('serial_number');
+            $question->save();
+        }
         if(isset($data['options'])){
             foreach($data['options'] as $opt){
                 $option = Option::updateOrCreate(
@@ -54,9 +57,15 @@ class QuestionController extends Controller
                     [
                         'question_id' => $question->id,
                         'description' => $opt['description'],
+                        'serial_number' => $opt['serialNumber'],
                         'is_correct' => $opt['isCorrect'] == 'yes'
                     ]
                 );
+                $isOptionEdit = $opt['id'] ? $opt['id'] == '0' ? false : true : false;
+                if(!$isOptionEdit){
+                    $option->serial_number = Option::where('question_id', $question->id)->max('serial_number');
+                    $option->save();
+                }
             }
         }
         return response()->json([
@@ -65,4 +74,33 @@ class QuestionController extends Controller
         ]);
     }
 
+    public function updateSerialNumber(Request $request)
+    {
+        $data = $request->all();
+        // TODO: need to get serial Number from DB instead of request data
+        $serialNumber = $data['serialNumber'];
+        $action = $data['action'];
+        $newSerialNumber = null;
+        if($action == 'up'){
+            $newSerialNumber = $serialNumber + 1;
+        } else if($action == 'down'){
+            $newSerialNumber = $serialNumber - 1;
+        } else {
+            return response()->json([
+                'status' => 'info',
+                'message' => "Invalid action!"
+            ]);
+        }
+        // first update the corresponding entity
+        Question::where('serial_number', $newSerialNumber)
+                ->update(['serial_number' => $serialNumber]);
+        // second update the respective entity
+        Question::where('id', $data['id'])
+                ->update(['serial_number' => $newSerialNumber]);
+                
+        return response()->json([
+            'status' => 'success',
+            'message' => "Saved successfully!"
+        ]);
+    }
 }

@@ -18,6 +18,7 @@ class CreateOptionsTable extends Migration
             $table->unsignedBigInteger('question_id');
             $table->foreign('question_id')->references('id')->on('questions');
             
+            $table->smallInteger('serial_number')->default(1);
             $table->longText('description');
             $table->boolean('is_correct');
             $table->timestamps();

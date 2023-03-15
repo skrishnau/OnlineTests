@@ -112,6 +112,7 @@
                     <td>
                         <div>
                             <input type="hidden" name="id" class="optionId" value="0"/>
+                            <input type="hidden" name="serialNumber" class="serialNumber" value="1"/>
                             <div class="editorOption"></div>
                         </div>
                     </td>
