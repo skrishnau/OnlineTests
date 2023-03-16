@@ -9,7 +9,7 @@ A test paper consists of a set of questions. A question can be either a multi-ch
 ### Features
 
 - Multiple sets within a question-paper,
-- Examination timeout and deadline.
+- Examination duration, timeout and deadline.
 - Examination questions visibility settings. All in one page or grouped by sets or one question per page.
 - Multichoice and plain-text answers.
 - Easy Reporting. Cumulative reports.
