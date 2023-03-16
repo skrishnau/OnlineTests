@@ -18,9 +18,6 @@ class PaperController extends Controller
         $papers = Paper::
                 select('id', 'name', 'start_datetime as startDateTime', 'duration_in_mins as durationInMins')
                 ->get();
-        // foreach($papers as $paper){
-        //     $paper->linkUrl = PaperController::getBaseUrl()."/exam/".$paper->linkUrl;
-        // }
         return view('paper.index', compact('papers'));
     }
     
@@ -29,11 +26,10 @@ class PaperController extends Controller
         $paper = Paper::where('id', $id)
             ->select('id', 'name', 'link_id as linkUrl')
             ->first();
-        $paper->linkUrl = PaperController::getBaseUrl()."/exam/".$paper->linkUrl;
+        $paper->linkUrl = PaperController::getExamUrl($paper->linkUrl);
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->get();
-        $paper->link_id = PaperController::getBaseUrl() . '/exam/' . $paper->link_id;
         return view('paper.show', compact('paper', 'questions'));
     }
 
@@ -56,8 +52,17 @@ class PaperController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
+        $linkId = null;
+        while(!$linkId){
+            $linkId = PaperController::generateRandomString();
+            if(Paper::where('link_id', $linkId)->exists()){
+                $linkId = null;
+            }
+        }
+        $paper->link_id = $linkId;
         $paper = Paper::create([
-            "name" => $data["name"]
+            "name" => $data["name"],
+            "link_id" => $linkId
         ]);
         // return redirect()->route('paper.show', $paper->id);
         return redirect()->route('paper.index');
@@ -78,11 +83,9 @@ class PaperController extends Controller
         $data = $request->all();
         $paper = Paper::find($data['paperId']);
         $paper->start_datetime = Carbon::now();
-        $paper->link_id = PaperController::generateRandomString();
+        // TODO: also store deadline, exam-duration inputs
         $paper->save();
-        $url = PaperController::getBaseUrl();
-        // Append the requested resource location to the URL   
-        $url.= '/exam/'. $paper->link_id;
+        $url = PaperController::getExamUrl($paper->link_id);
         
         return response()->json([
             'status' => 'success',
@@ -101,6 +104,10 @@ class PaperController extends Controller
             $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+    function getExamUrl($linkId)
+    {
+        return PaperController::getBaseUrl() . '/exam/'. $linkId;
     }
     function getBaseUrl()
     {
