@@ -55,7 +55,7 @@ class PaperController extends Controller
         $linkId = null;
         while(!$linkId){
             $linkId = PaperController::generateRandomString();
-            if(Paper::where('link_id', $linkId)->exists()){
+            if(Paper::where('link_id', $linkId)->count() > 0){
                 $linkId = null;
             }
         }
