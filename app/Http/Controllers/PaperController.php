@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 use App\Models\Paper;
 use App\Models\Question;
+use App\Helpers\CommonHelper;
 
 
 class PaperController extends Controller
@@ -43,29 +44,43 @@ class PaperController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:papers|max:255',
         ]);
 
         if($validator->fails()){
-            return redirect('paper/create')
-                        ->withErrors($validator)
-                        ->withInput();
+            if(CommonHelper::isEditMode($data['id'])){
+                return redirect()
+                    ->route('paper.edit', $data['id'])
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                return redirect('paper/create')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
         }
         $linkId = null;
         while(!$linkId){
-            $linkId = PaperController::generateRandomString();
+            $linkId = CommonHelper::generateRandomString();
             if(Paper::where('link_id', $linkId)->count() > 0){
                 $linkId = null;
             }
         }
-        $paper->link_id = $linkId;
-        $paper = Paper::create([
-            "name" => $data["name"],
-            "link_id" => $linkId
-        ]);
-        // return redirect()->route('paper.show', $paper->id);
-        return redirect()->route('paper.index');
+        //$paper->link_id = $linkId;
+        $paper = Paper::updateOrCreate(
+            ['id' => $data["id"]],
+            [
+                "name" => $data["name"],
+            ]
+        );
+        if(!CommonHelper::isEditMode($data["id"])){
+            $paper->link_id = $linkId;
+            $paper->save();
+        }
+        return redirect()->route('paper.show', $paper->id);
+        //return redirect()->route('paper.index');
     }
 
     public function edit($id)
@@ -95,30 +110,12 @@ class PaperController extends Controller
             ]
         ]);
     }
-    function generateRandomString($length = 10) 
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
+   
     function getExamUrl($linkId)
     {
-        return PaperController::getBaseUrl() . '/exam/'. $linkId;
+        return route('exam.take', $linkId); //CommonHelper::getBaseUrl() . '/exam/'. $linkId;
     }
-    function getBaseUrl()
-    {
-        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
-            $url = "https://";   
-        else  
-            $url = "http://";   
-        // Append the host(domain name, ip) to the URL.   
-        $url.= $_SERVER['HTTP_HOST'];
-        return $url;
-    }
+    
 
     public function update(Request $request, Algorithm $algorithm)
     {

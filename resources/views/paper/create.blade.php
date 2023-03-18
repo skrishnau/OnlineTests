@@ -16,6 +16,7 @@
                 <form action="/paper/store" method="POST">
                     {{-- {!! Form::open(array('route'=>'paper.store' ))!!} --}}
                     @csrf
+                    <input type="hidden" name="id" id="id" value="{{old('id'), $paper?->id}}"/>
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} clearfix">
                         <label for="name" class="col-sm-4 control-label">Name</label>
 

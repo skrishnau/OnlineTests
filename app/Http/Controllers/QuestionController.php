@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Paper;
 use App\Models\Question;
 use App\Models\Option;
+use App\Helpers\CommonHelper;
 
 
 class QuestionController extends Controller
@@ -34,7 +35,7 @@ class QuestionController extends Controller
                 'message' => $validator->errors ()->first()
             ]);
         }
-        $isEdit = $data['id'] ? $data['id'] == '0' ? false : true : false;
+        $isEdit = CommonHelper::isEditMode($data['id']);//$data['id'] ? $data['id'] == '0' ? false : true : false;
 
         $question = Question::updateOrCreate(
             ['id' => $data['id']],
