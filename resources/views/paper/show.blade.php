@@ -36,13 +36,14 @@
                    
                     <table class="table table-hover mt-2 questionNumber ">
                         @foreach($questions as $que)
-                            <tr class="questionRow">
+                            <tr class="questionRow movableSection">
                                 <td class="">
                                     <input type="hidden" class="questionId" value="{{$que->id}}"/>
+                                    <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
                                     <div>
                                         <div class="">
                                             <div class="float-start">
-                                                {{$que->serial_number}}
+                                                <span class="serialNumberText">{{$que->serial_number}}</span>
                                             </div>
                                             <div class="float-start ms-4">
                                                 {!! htmlspecialchars_decode($que->description) !!}
@@ -68,8 +69,8 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
-                                    <button class="moveUp btn btn-outline-primary" type="button" title="Move UP">↑</button>
-                                    <button class="moveDown btn btn-outline-primary" type="button" title="Move DOWN">↓</button>
+                                    <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
+                                    <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
                                     <button class="remove btn btn-outline-danger" type="button" title="Delete Question">X</button>
                                 </td>
                             </tr>

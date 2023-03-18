@@ -108,7 +108,7 @@
 
             {{-- Template for option --}}
             <table id="optionTemplate" style="display:none;">
-                <tr class="optionSection">
+                <tr class="optionSection movableSection">
                     <td>
                         <div>
                             <input type="hidden" name="id" class="optionId" value="0"/>

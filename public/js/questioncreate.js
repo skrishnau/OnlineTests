@@ -28,31 +28,7 @@ function initializeMoveOptionButtons(){
     $(".remove").unbind("click").on("click", remove);
 }
 
-function moveUp(){
-    var $currentRow = $(this).closest("tr.optionSection");
-    var prev = $currentRow.prev(".optionSection");
-    if(prev){
-        var curSN = $currentRow.find(".serialNumber").val();
-        var prevSN = prev.find(".serialNumber").val();
-        $currentRow.find(".serialNumber").val(prevSN);
-        prev.find(".serialNumber").val(curSN);
 
-        $(prev).before($currentRow);
-    }
-}
-
-function moveDown(){
-    var $currentRow = $(this).closest("tr.optionSection");
-    var next = $currentRow.next(".optionSection");
-    if(next){
-        var curSN = $currentRow.find(".serialNumber").val();
-        var nextSN = next.find(".serialNumber").val();
-        $currentRow.find(".serialNumber").val(nextSN);
-        next.find(".serialNumber").val(curSN);
-
-        $(next).after($currentRow);
-    }
-}
 
 function remove(){
     var curSN = $(this).closest("tr.optionSection").find(".serialNumber").val();

@@ -48,7 +48,12 @@ class QuestionController extends Controller
             ]
         );
         if(!$isEdit){
-            $question->serial_number = Question::where('paper_id', $data['paperId'])->max('serial_number');
+            $query = Question::where('paper_id', $data['paperId']);
+            if($query->count() > 0){
+                $question->serial_number = $query->max('serial_number') + 1;
+            } else {
+                $question->serial_number = 1;
+            }
             $question->save();
         }
         if(isset($data['options'])){
@@ -79,13 +84,13 @@ class QuestionController extends Controller
     {
         $data = $request->all();
         // TODO: need to get serial Number from DB instead of request data
-        $serialNumber = $data['serialNumber'];
+        $serialNumber = Question::where('id', $data['id'])->select('serial_number')->first()->serial_number;
         $action = $data['action'];
         $newSerialNumber = null;
         if($action == 'up'){
-            $newSerialNumber = $serialNumber + 1;
-        } else if($action == 'down'){
             $newSerialNumber = $serialNumber - 1;
+        } else if($action == 'down'){
+            $newSerialNumber = $serialNumber + 1;
         } else {
             return response()->json([
                 'status' => 'info',
@@ -97,11 +102,11 @@ class QuestionController extends Controller
                 ->update(['serial_number' => $serialNumber]);
         // second update the respective entity
         Question::where('id', $data['id'])
-                ->update(['serial_number' => $newSerialNumber]);
+                ->update(['serial_number' => ($newSerialNumber > 0 ? $newSerialNumber : 1)]);
                 
         return response()->json([
             'status' => 'success',
-            'message' => "Saved successfully!"
+            'message' => "Saved successfully!",
         ]);
     }
 }
