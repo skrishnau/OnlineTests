@@ -36,7 +36,15 @@ class QuestionController extends Controller
             ]);
         }
         $isEdit = CommonHelper::isEditMode($data['id']);//$data['id'] ? $data['id'] == '0' ? false : true : false;
-
+        $serialNumber = 0;
+        if(!$isEdit) {
+            $query = Question::where('paper_id', $data['paperId']);
+            if($query->count() > 0){
+                $serial_number = $query->max('serial_number') + 1;
+            } else {
+                $serial_number = 1;
+            }
+        }
         $question = Question::updateOrCreate(
             ['id' => $data['id']],
             [
@@ -47,13 +55,8 @@ class QuestionController extends Controller
                 'paper_id' => $data['paperId'],
             ]
         );
-        if(!$isEdit){
-            $query = Question::where('paper_id', $data['paperId']);
-            if($query->count() > 0){
-                $question->serial_number = $query->max('serial_number') + 1;
-            } else {
-                $question->serial_number = 1;
-            }
+        if(!$isEdit) {
+            $question->serial_number = $serial_number;
             $question->save();
         }
         if(isset($data['options'])){
@@ -107,6 +110,32 @@ class QuestionController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => "Saved successfully!",
+        ]);
+    }
+    public function destroy(Request $request)
+    {
+        $data = $request->all();
+        $que = Question::find($data['id']);
+        if(!$que){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Record doesn\'t exists',
+            ]);
+        }
+        $opts = Option::where('question_id', $data['id'])->delete();
+        $sn = $que->serial_number;
+        $que->delete();
+
+        $higherQues = Question::where('serial_number', '>', $sn)->get();
+        foreach($higherQues as $hq)
+        {
+            $hq->serial_number = $hq->serial_number - 1;
+            $hq->save();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted successfully!',
         ]);
     }
 }

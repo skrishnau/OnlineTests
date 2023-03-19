@@ -30,6 +30,7 @@ Route::post('/paper/startTest', [PaperController::class, 'startTest'])->name('pa
 Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
 Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
 Route::post('/question/updateSerialNumber', [QuestionController::class, 'updateSerialNumber'])->name('question.updateSerialNumber');
+Route::post('/question/destroy', [QuestionController::class, 'destroy'])->name('question.destroy');
 
 Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
 Route::get('/exam/take/{linkId}', [ExamController::class, 'take'])->name('exam.take');

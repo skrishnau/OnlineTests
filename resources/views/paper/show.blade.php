@@ -36,7 +36,7 @@
                    
                     <table class="table table-hover mt-2 questionNumber ">
                         @foreach($questions as $que)
-                            <tr class="questionRow movableSection">
+                            <tr class="questionRow movableSection" id="questionRow{{$que->id}}">
                                 <td class="">
                                     <input type="hidden" class="questionId" value="{{$que->id}}"/>
                                     <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
@@ -53,7 +53,7 @@
                                         @foreach($que->options as $opt)
                                             <div class="ms-4">
                                                 <div class="float-start">
-                                                    <input type="radio" name="opt{{$opt->id}}" value="none"/>
+                                                    <input type="radio" name="que_{{$que->id}}" value="none"/>
                                                 </div>
                                                 <div class="float-start">
                                                     {!! html_entity_decode($opt->description) !!}
@@ -71,7 +71,7 @@
                                     {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
                                     <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
                                     <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
-                                    <button class="remove btn btn-outline-danger" type="button" title="Delete Question">X</button>
+                                    <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -98,6 +98,25 @@
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary startTest">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="questionDeleteModal" tabindex="-1" aria-labelledby="questionDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="questionDeleteModalLabel">Delete Question?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="questionId" value=""/>
+                    Are you sure to delete the question?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary deleteQuestion">Yes</button>
                 </div>
             </div>
         </div>

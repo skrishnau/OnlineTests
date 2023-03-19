@@ -47,7 +47,6 @@ function moveUp(e){
     var $currentRow = $this.closest("tr.movableSection");
     var prev = $currentRow.prev(".movableSection");
     if(prev){
-        debugger;
         var curSN = $currentRow.find(".serialNumber").val();
         var prevSN = prev.find(".serialNumber").val();
         
@@ -94,3 +93,4 @@ function canMoveDown(e){
     var $currentRow = $this.closest("tr.movableSection");
     return $currentRow.next(".movableSection").length > 0;
 }
+
