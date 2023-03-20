@@ -35,5 +35,6 @@ Route::post('/question/destroy', [QuestionController::class, 'destroy'])->name('
 Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
 Route::get('/exam/take/{linkId}', [ExamController::class, 'take'])->name('exam.take');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
+Route::post('/exam/success', [ExamController::class, 'success'])->name('exam.success');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

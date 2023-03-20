@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
     public function questions() {
     	return $this->hasMany(\App\Model\Answer::class);
     }

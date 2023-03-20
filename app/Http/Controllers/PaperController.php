@@ -27,6 +27,10 @@ class PaperController extends Controller
         $paper = Paper::where('id', $id)
             ->select('id', 'name', 'link_id as linkUrl')
             ->first();
+        if(!$paper){
+            $message = 'Not found!';
+            return view('layout.error', compact('message'));
+        }
         $paper->linkUrl = PaperController::getExamUrl($paper->linkUrl);
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
@@ -49,8 +53,9 @@ class PaperController extends Controller
             'name' => 'required|unique:papers|max:255',
         ]);
 
+        $isEditMode = CommonHelper::isEditMode($data["id"]);
         if($validator->fails()){
-            if(CommonHelper::isEditMode($data['id'])){
+            if($isEditMode){
                 return redirect()
                     ->route('paper.edit', $data['id'])
                     ->withErrors($validator)
@@ -61,23 +66,26 @@ class PaperController extends Controller
                     ->withInput();
             }
         }
-        $linkId = null;
-        while(!$linkId){
-            $linkId = CommonHelper::generateRandomString();
-            if(Paper::where('link_id', $linkId)->count() > 0){
-                $linkId = null;
+        
+        if($isEditMode){
+            $paper = Paper::updateOrCreate(
+                ['id' => $data["id"]],
+                [
+                    "name" => $data["name"],
+                ]
+            );
+        } else {
+            $linkId = null;
+            while(!$linkId) {
+                $linkId = CommonHelper::generateRandomString();
+                if(Paper::where('link_id', $linkId)->count() > 0){
+                    $linkId = null;
+                }
             }
-        }
-        //$paper->link_id = $linkId;
-        $paper = Paper::updateOrCreate(
-            ['id' => $data["id"]],
-            [
+            $paper = Paper::create([
                 "name" => $data["name"],
-            ]
-        );
-        if(!CommonHelper::isEditMode($data["id"])){
-            $paper->link_id = $linkId;
-            $paper->save();
+                'link_id' => $linkId
+            ]);
         }
         return redirect()->route('paper.show', $paper->id);
         //return redirect()->route('paper.index');

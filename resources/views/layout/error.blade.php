@@ -1,10 +1,10 @@
 @extends('layout.app')
 
 @section('title')
-    {{$paper->name}}
+    Error
 @endsection
 
 @section('content')
 
-    <h4>{{$message}}</h4>
+    <h4 class="mt-5 mb-5 text-center">{{$message}}</h4>
 @endsection
