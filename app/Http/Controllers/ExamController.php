@@ -22,6 +22,8 @@ class ExamController extends Controller
             return view('layout.error', compact('message'));
         }
         $isPreview = false;
+        // NOTE: in case of examination we should not show breadcrumbs and other links of the site
+        $showBreadCrumbs = true;
         if($show == null){
             // its an exam (not a preview)
             if($paper->start_datetime == null){
@@ -37,6 +39,8 @@ class ExamController extends Controller
                 $message = 'Not found!';
                 return view('layout.error', compact('message'));  
             }
+            // don't show breadcrumbs
+            $showBreadCrumbs = false;
         } else if($show == 'preview') {
             // its a preview
             $isPreview = true;
@@ -47,7 +51,7 @@ class ExamController extends Controller
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->get();
-        return view('exam.create', compact('paper', 'questions', 'isPreview'));
+        return view('exam.create', compact('paper', 'questions', 'isPreview', 'showBreadCrumbs'));
     }
 
     public function store(Request $request)

@@ -61,12 +61,14 @@
                 </div>  --}}
                 <div class="col-md-10 offset-md-1 bg-light ">
                     <div class="row card ">
-                        <div class=" card-header bg-dark text-light">
-                            {{-- <h3>
-                                @yield('heading')
-                            </h3> --}}
-                            <a class="text-light" href="{{route("paper.index")}}">All Papers</a>
-                        </div>
+                        @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
+                            <div class=" card-header bg-dark text-light">
+                                {{-- <h3>
+                                    @yield('heading')
+                                </h3> --}}
+                                <a class="text-light" href="{{route("paper.index")}}">All Papers</a>
+                            </div>
+                        @endif
                         <div class="card-body content">
                             {{-- Contents --}}
                             @yield('content')
