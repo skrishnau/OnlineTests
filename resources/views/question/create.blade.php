@@ -28,7 +28,7 @@
 
         <h4>Paper: {{$paper->name}}</h4>
 
-        <h3>Create Question</h3>
+        <h5>Create Question</h5>
         <div class="box box-info clearfix pad ">
             <form id="questionCreateForm" action="/paper/store" method="POST">
                 @csrf
@@ -79,10 +79,10 @@
                 <div id="container">
                     <textarea id="editorQuestion"></textarea>
                 </div>
-
+                <h4 class="mt-3">Options</h4>
                 <table id="optionTable" class="table" >
                     <tr>
-                        <th><h4>Option Text</h4></th>
+                        <th>Option Text</th>
                         <th>Is Correct?</th>
                         <th>Actions</th>
                     </tr>

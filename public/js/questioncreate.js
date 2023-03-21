@@ -16,7 +16,7 @@ $(document).ready(function(){
     initializeMoveOptionButtons();
 
 
-    $("#addOption").on("click", addQuestion);
+    $("#addOption").on("click", addOption);
 
 
     $("#questionCreateForm").on("submit", saveQuestion);
@@ -41,7 +41,8 @@ function remove(){
     }
     var $currentRow = $(this).closest("tr.optionSection").remove();
 }
-function addQuestion(){
+function addOption(){
+    blockWindow();
     let clone = $("#optionTemplate").find(".optionSection").clone();
     let $optionSections = $("#questionCreateForm").find("." + EDITOR_OPTION).map((index, item)=>{
         return +$(item).attr("data-id");
@@ -53,7 +54,6 @@ function addQuestion(){
 
     // serial Number
     $("#optionTable .optionSection:last-child").find("")
-
     $("#optionTable").append(clone);
     
     initializeMoveOptionButtons();
@@ -61,6 +61,8 @@ function addQuestion(){
     initializeEditor(id)
         .then(editor => {
             optionEditors[id] = editor;
+            editor.focus();
+            unblockWindow();
         });
 }
 function saveQuestion(e){

@@ -34,7 +34,7 @@
                     @endphp
                     @if($notStarted->count() > 0)
                         <tr>
-                            <th colspan="5" class="text-primary">
+                            <th colspan="6" class="text-primary">
                                 Not Started
                             </th>
                         </tr>
@@ -46,7 +46,7 @@
 
                     @if($active->count() > 0)
                         <tr>
-                            <th colspan="5" class="text-success">
+                            <th colspan="6" class="text-success">
                                 Active
                             </th>
                         </tr>
@@ -59,7 +59,7 @@
 
                     @if($ended->count() > 0)
                         <tr>
-                            <th colspan="5" class="text-danger">
+                            <th colspan="6" class="text-danger">
                                 Ended
                             </th>
                         </tr>
