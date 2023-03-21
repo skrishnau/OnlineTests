@@ -18,28 +18,57 @@
             <div class="box box-info clearfix pad mt-4">
                 <table class="table table-bordered table-hover">
                     <tr>
+                        <th>S.No.</th>
                         <th style="width:40%;">Name </th>
                         <th>Start DateTime</th>
+                        <th>End DateTime</th>
                         <th>Duration(mins.)</th>
                         <th>Action</th>
                     </tr>
-                    @foreach($papers as $item)
+
+                    @php
+                        $notStarted = $papers->whereNull('startDatetime');
+                        $active = $papers->whereNotNull('startDatetime')->whereNull('endDatetime');
+                        $ended = $papers->whereNotNull('startDatetime')->whereNotNull('endDatetime');
+                        $sn = 1;
+                    @endphp
+                    @if($notStarted->count() > 0)
                         <tr>
-                            <td>
-                                <a class="text-decoration-none " href="{{route('paper.show', ['id' => $item->id])}}">{{$item->name}}</a>
-                                
-                            </td>
-                            <td>
-                                {{$item->startDateTime}}
-                            </td>
-                            <td>
-                                {{$item->durationInMins}}
-                            </td>
-                            <td>
-                                <a href="{{route('paper.show', ['id' => $item->id])}}">View</a>
-                            </td>
+                            <th colspan="5" class="text-primary">
+                                Not Started
+                            </th>
                         </tr>
-                    @endforeach
+                        @foreach($notStarted as $item)
+                        @include('paper.indexcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                        @php($sn++)
+                        @endforeach
+                    @endif
+
+                    @if($active->count() > 0)
+                        <tr>
+                            <th colspan="5" class="text-success">
+                                Active
+                            </th>
+                        </tr>
+                        {{-- @php($sn = 1) --}}
+                        @foreach($active as $item)
+                            @include('paper.indexcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                            @php($sn++)
+                        @endforeach
+                    @endif
+
+                    @if($ended->count() > 0)
+                        <tr>
+                            <th colspan="5" class="text-danger">
+                                Ended
+                            </th>
+                        </tr>
+                        {{-- @php($sn = 1) --}}
+                        @foreach($ended as $item)
+                        @include('paper.indexcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                        @php($sn++)
+                        @endforeach
+                    @endif
                 </table>
                
             </div>
