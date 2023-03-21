@@ -13,17 +13,41 @@ use App\Models\Answer;
 class ExamController extends Controller
 {
     //
-    public function create($paperId)
+    public function create($paperId, Request $request)
     {
+        $show = $request->input('show');
         $paper = Paper::where('id', $paperId)->first();
         if(!$paper){
+            $message = 'Not found!';
+            return view('layout.error', compact('message'));
+        }
+        $isPreview = false;
+        if($show == null){
+            // its an exam (not a preview)
+            if($paper->start_datetime == null){
+                $message = 'This exam has not been started yet.';
+                return view('layout.error', compact('message'));    
+            }
+            if($paper->end_datetime !== null){
+                $message = 'This exam has already ended.';
+                return view('layout.error', compact('message'));    
+            }
+            // NOTE: if it's an actual exam then there must be 'code' param present in the url 
+            if($paper->link_id != $request->input('code')){
+                $message = 'Not found!';
+                return view('layout.error', compact('message'));  
+            }
+        } else if($show == 'preview') {
+            // its a preview
+            $isPreview = true;
+        } else {
             $message = 'Not found!';
             return view('layout.error', compact('message'));
         }
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->get();
-        return view('exam.create', compact('paper', 'questions'));
+        return view('exam.create', compact('paper', 'questions', 'isPreview'));
     }
 
     public function store(Request $request)
@@ -46,9 +70,19 @@ class ExamController extends Controller
             'status' => 'success',
             'message' => "Submitted successfully!",
             'data' => [
-                'redirectUrl' => route('exam.success')
+                'redirectUrl' => route('exam.success', $data['paperId'])
             ]
         ]);
+    }
+
+    public function success($paperId)
+    {
+        $paper = Paper::where('id', $paperId)->first();
+        if(!$paper){
+            $message = 'Not found!';
+            return view('layout.error', compact('message'));
+        }
+        return view('exam.success', compact('paper'));
     }
 
 }
