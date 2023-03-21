@@ -15,20 +15,33 @@
                     </a>
                 </div>
                 <div class="float-end">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Start Test</button>
-                    <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id])}}" class="btn btn-primary">
+                    <?php 
+                    $canShowStartBtn = !isset($paper->start_datetime); 
+                    $canShowEndBtn = isset($paper->start_datetime) && !isset($paper->end_datetime);
+                    ?>
+                    @if($canShowStartBtn)
+                    <button type="button" class="btn btn-success btnStartPaper" data-bs-toggle="modal" data-bs-target="#startModal">Start Test</button>
+                    @endif
+                    <button type="button" class="btn btn-danger btnEndPaper" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
+                    <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
                         <i class="bi bi-file-earmark-minus-fill"></i> Preview
                     </a>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div class=" ">
-                Exam Link: <a class="testLink text-decoration-none" href="{{$paper->linkUrl}}">{{$paper->linkUrl}}</a>
+                Exam Link: <a class="testLink text-decoration-none" href="{{$linkUrl}}">{{$linkUrl}}</a>
+                <br/>
+                Started On : <b class="lblStartDatetime">{{$paper->start_datetime}}</b>
+                <br/>
+                Ended On: <b class="lblEndDatetime">{{$paper->end_datetime}}</b>
             </div>
-            <div class="mt-3">
-                <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
-                    <i class="bi bi-plus-lg"></i> Add New Question
-                </a>
+            <div class="mt-5">
+                @if($canEdit)
+                    <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
+                        <i class="bi bi-plus-lg"></i> Add New Question
+                    </a>
+                @endif
             </div>
 
             <div class="box box-info clearfix pad ">
@@ -55,7 +68,7 @@
                                                 <div class="float-start">
                                                     <input type="radio" name="que_{{$que->id}}" value="none"/>
                                                 </div>
-                                                <div class="float-start">
+                                                <div class="float-start ms-3">
                                                     {!! html_entity_decode($opt->description) !!}
                                                 </div>
                                                 <div class="clearfix">
@@ -64,14 +77,16 @@
                                         @endforeach
                                     </div>
                                 </td>
-                                <td class="" style="width:200px;">
-                                    <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
-                                    <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
-                                    <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
-                                    <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
+                                <td class="divQuestionAction" style="width:200px;">
+                                    @if($canEdit)
+                                        <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
+                                        <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
+                                        <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
+                                        <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -85,11 +100,11 @@
         </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="startModal" tabindex="-1" aria-labelledby="startModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Start Test?</h1>
+                <h1 class="modal-title fs-5" id="startModalLabel">Start Test?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -98,6 +113,24 @@
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary startTest">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- TODO: implement end and start modal in a sinlge modal. --}}
+    <div class="modal fade" id="endModal" tabindex="-1" aria-labelledby="endModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="startModalLabel">End Test?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure to end the test?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary endTest">Yes</button>
                 </div>
             </div>
         </div>

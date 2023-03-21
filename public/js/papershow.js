@@ -3,6 +3,7 @@ const DOWN = "down";
 
 $(document).ready(function(){
     $(".startTest").on("click", startTest);
+    $(".endTest").on("click", endTest);
     $(".moveUp, .moveDown").on("click", moveSection);
     $(".remove").on("click", function(){
         $("#questionDeleteModal .questionId").val($(this).closest(".movableSection").find(".questionId").val());
@@ -20,12 +21,34 @@ function startTest(){
         unblockWindow();
         notify(response.status, response.message);
         if(response.status == 'success'){
-            $('#exampleModal').modal('hide'); 
-            $(".testLink").text(response.data.linkUrl);
-            $(".testLink").show();
+            $('#startModal').modal('hide'); 
+            $(".btnStartPaper").remove();
+            $(".btnEndPaper").show();
+            $(".lblStartDatetime").text(response.data.startDatetime);
+            removeAllActionButtons();
         } 
     });
+}
 
+function endTest(){
+    blockWindow();
+    var data = {
+        'paperId': $("#paperId").val()
+    };
+    $.post("/paper/endTest", (data), function(response){
+        unblockWindow();
+        notify(response.status, response.message);
+        if(response.status == 'success'){
+            $('#endModal').modal('hide'); 
+            // hide both buttons
+            $(".btnStartPaper").remove();
+            $(".btnEndPaper").remove();
+            $(".lblEndDatetime").text(response.data.endDatetime);
+        } 
+    });
+}
+function removeAllActionButtons(){
+    $(".addQuestion, .editQuestion, .moveUp, .moveDown, .remove").remove();
 }
 
 function moveSection(e){
