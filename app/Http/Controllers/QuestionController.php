@@ -15,7 +15,15 @@ class QuestionController extends Controller
 {
     public function create($paperId, $questionId)
     {
-        $paper = Paper::where('id', $paperId)->first();
+        $paper = Paper::find($paperId);
+        if(!$paper){
+            $message = 'Not found!';
+            return view('layout.error', compact('message'));
+        }
+        if(isset($paper->start_datetime)){
+            $message = 'This paper\'s exam has already been started! You can\'t add/edit questions.';
+            return view('layout.error', compact('message'));
+        }
         $question = Question::where('id', $questionId)->first();
         return view('question.create', compact('paper', 'question'));
     }
@@ -23,9 +31,14 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        
+        $paper = Paper::find($data['paperId']);
+        if(isset($paper->start_datetime)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This paper\'s exam has already been started! You can\'t add/edit questions.'
+            ]);
+        }
         $validator = Validator::make($request->all(), [
-            'type' => 'required',
             'description' => 'required|min:1',
         ]);
 
@@ -49,7 +62,6 @@ class QuestionController extends Controller
             ['id' => $data['id']],
             [
                 'description' => $data['description'],
-                'type' => $data['type'],
                 'tag' => $data['tag'],
                 'group' => $data['group'],
                 'paper_id' => $data['paperId'],
@@ -120,6 +132,13 @@ class QuestionController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Record doesn\'t exists',
+            ]);
+        }
+        $paper = Paper::find($que->paper_id);
+        if(isset($paper->start_datetime)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This paper\'s exam has already been started! You can\'t delete questions.'
             ]);
         }
         $opts = Option::where('question_id', $data['id'])->delete();

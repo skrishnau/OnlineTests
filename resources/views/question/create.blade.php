@@ -35,22 +35,7 @@
                 <input type="hidden" id="paperId" name="paperId" value="{{$paper->id}}" />
                 <input type="hidden" id="id" name="id" value="{{$question?$question->id:0}}" /> 
                 
-                <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
-                    <label for="type" class="col-sm-4 control-label">Answer Type</label>
-
-                    <div class="col-sm-8">
-                        <select id="type" type="text" class="form-control" name="type" value="{{ old('type') }}" required autofocus autocomplete="off">
-                            <option value="1">Multi Choice</option>
-                            <option value="2">Text Answer</option>
-                        </select>
-
-                        @if ($errors->has('type'))
-                            <span class="help-block">
-                                        <strong>{{ $errors->first('type') }}</strong>
-                                    </span>
-                        @endif
-                    </div>
-                </div>
+                
 
                 <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
                     <label for="group" class="col-sm-4 control-label">Group</label>
@@ -68,7 +53,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }} clearfix">
-                    <label for="tag" class="col-sm-4 control-label">Tag</label>
+                    <label for="tag" class="col-sm-4 control-label">Search Tags (separate each tags by commas)</label>
 
                     <div class="col-sm-8">
                         <input id="tag" type="text" class="form-control" name="tag" value="{{ old('tag') }}"
@@ -80,6 +65,14 @@
                                     </span>
                         @endif
                     </div>
+                </div>
+
+                <div class="form-group mt-4 mb-4{{ $errors->has('type') ? ' has-error' : '' }} clearfix">
+                    <label for="type" class="col-sm-4 control-label">Answer Type</label>
+                    <br>
+                    <b>Multi Choice: </b> To make a question 'multi-choice' type, please add options. If you choose multiple options as correct then the examinee will be able to choose multiple answers for this question. 
+                    <br>
+                    <b>Answer Text: </b> To make a question "answer-text" type, please do not add any options. The examinee will get a textbox to enter the answer in this type of questions.
                 </div>
 
                 <h4 class="mt-3">Question</h4>
