@@ -22,10 +22,18 @@ $(document).ready(function(){
     });
 
     $(".examSubmit").on("click", examSubmit);
+
+    showTimer();
     
 });
 
-function optionRowClicked(){
+function showTimer(date) {
+    setInterval(function(){
+        $(".timer").text(new Date().getTime());
+    }, 1000);
+}
+
+function optionRowClicked() {
     $(this).find("input:radio").prop("checked", true);
 }
 

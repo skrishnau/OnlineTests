@@ -20,9 +20,9 @@
                     <tr>
                         <th>S.No.</th>
                         <th style="width:40%;">Name </th>
-                        <th>Start DateTime</th>
+                        {{-- <th>Start DateTime</th>
                         <th>End DateTime</th>
-                        <th>Duration(mins.)</th>
+                        <th>Duration(mins.)</th> --}}
                         <th>Action</th>
                     </tr>
 

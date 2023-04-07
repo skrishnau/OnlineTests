@@ -18,7 +18,7 @@ class PaperController extends Controller
     public function index()
     {
         $papers = Paper::
-                select('id', 'name', 'start_datetime as startDatetime', 'end_datetime as endDatetime', 'duration_in_mins as durationInMins')
+                select('id', 'name')//, 'start_datetime as startDatetime', 'end_datetime as endDatetime', 'duration_in_mins as durationInMins')
                 ->get();
         return view('paper.index', compact('papers'));
     }
@@ -80,16 +80,16 @@ class PaperController extends Controller
                 ]
             );
         } else {
-            $linkId = null;
-            while(!$linkId) {
-                $linkId = CommonHelper::generateRandomString();
-                if(Paper::where('link_id', $linkId)->count() > 0){
-                    $linkId = null;
-                }
-            }
+            // $linkId = null;
+            // while(!$linkId) {
+            //     $linkId = CommonHelper::generateRandomString();
+            //     if(Paper::where('link_id', $linkId)->count() > 0){
+            //         $linkId = null;
+            //     }
+            // }
             $paper = Paper::create([
                 "name" => $data["name"],
-                'link_id' => $linkId
+                //'link_id' => $linkId
             ]);
         }
         return redirect()->route('paper.show', $paper->id);

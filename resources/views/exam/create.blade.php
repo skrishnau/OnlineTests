@@ -23,6 +23,9 @@
                 <br>
                 Started On:
                 <br> --}}
+                <div> 
+                    Time: <span class="timer"></span>
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
