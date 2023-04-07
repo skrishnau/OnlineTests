@@ -20,7 +20,7 @@
                     $canShowEndBtn = isset($paper->start_datetime) && !isset($paper->end_datetime);
                     ?>
                     @if($canShowStartBtn)
-                    <button type="button" class="btn btn-success btnStartPaper" data-bs-toggle="modal" data-bs-target="#startModal">Start Test</button>
+                        <button type="button" class="btn btn-success btnStartPaper">Start Test</button>
                     @endif
                     <button type="button" class="btn btn-danger btnEndPaper" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
                     <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
@@ -45,57 +45,69 @@
             </div>
 
             <div class="box box-info clearfix pad ">
-                <div class="col-md-12">
-                   
-                    <table class="table table-hover mt-2 questionNumber ">
-                        @foreach($questions as $que)
-                            <tr class="questionRow movableSection" id="questionRow{{$que->id}}">
-                                <td class="">
-                                    <input type="hidden" class="questionId" value="{{$que->id}}"/>
-                                    <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
-                                    <div>
-                                        <div class="">
-                                            <div class="float-start">
-                                                <span class="serialNumberText">{{$que->serial_number}}</span>
-                                            </div>
-                                            <div class="float-start ms-4">
-                                                {!! htmlspecialchars_decode($que->description) !!}
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        @foreach($que->options as $opt)
-                                            <div class="ms-4">
+                <div class="divExams">
+                    
+                </div>
+                <div class="divQuestion">
+                    <div class="col-md-12">
+                        <table class="table table-hover mt-2 questionNumber ">
+                            @foreach($questions as $que)
+                                <tr class="questionRow movableSection" id="questionRow{{$que->id}}">
+                                    <td class="">
+                                        <input type="hidden" class="questionId" value="{{$que->id}}"/>
+                                        <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
+                                        <div>
+                                            <div class="">
                                                 <div class="float-start">
-                                                    <input type="radio" name="que_{{$que->id}}" value="none"/>
+                                                    <span class="serialNumberText">{{$que->serial_number}}</span>
                                                 </div>
-                                                <div class="float-start ms-3">
-                                                    {!! html_entity_decode($opt->description) !!}
+                                                <div class="float-start ms-4">
+                                                    {!! htmlspecialchars_decode($que->description) !!}
                                                 </div>
-                                                <div class="clearfix">
-                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
-                                        @endforeach
-                                    </div>
-                                </td>
-                                <td class="divQuestionAction" style="width:200px;">
-                                    @if($canEdit)
-                                        <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
-                                        <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
-                                        <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
-                                        <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </table>
+                                            @foreach($que->options as $opt)
+                                                <div class="ms-4">
+                                                    <div class="float-start">
+                                                        <input type="radio" name="que_{{$que->id}}" value="none"/>
+                                                    </div>
+                                                    <div class="float-start ms-3">
+                                                        {!! html_entity_decode($opt->description) !!}
+                                                    </div>
+                                                    <div class="clearfix">
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    <td class="divQuestionAction" style="width:200px;">
+                                        @if($canEdit)
+                                            <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
+                                            <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
+                                            <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
+                                            <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                    <div class="col-md-9">
+                       <div class="questionView">
+                       </div>
+                    </div>
+                    <div class="mt-1">
+                        @if($canEdit)
+                            <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
+                                <i class="bi bi-plus-lg"></i> Add New Question
+                            </a>
+                        @endif
+                    </div>
                 </div>
-                <div class="col-md-9">
-                   <div class="questionView">
-                   </div>
-                </div>
+                
             </div>
         </div>
 
@@ -108,8 +120,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure to start the test?
+                    <div><b>Are you sure to start the test?</b></div>
+
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} clearfix mt-4">
+                        <label for="name" class="col-sm-4 control-label">Examination Name <i class="text-danger">*</i></label>
+                        <div class="col-sm-8">
+                            <input id="ssname" type="text" class="form-control name" name="name" value="{{ old('name') }}" required
+                                autofocus autocomplete="off">
+    
+                            @if ($errors->has('name'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                    </div>
                 </div>
+
+                
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary startTest">Yes</button>
@@ -122,7 +150,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="startModalLabel">End Test?</h1>
+                <h1 class="modal-title fs-5" id="endModalLabel">End Test?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

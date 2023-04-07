@@ -10,6 +10,12 @@ $(document).ready(function(){
         $("#questionDeleteModal").modal("show");
     });
     $(".deleteQuestion").on("click", deleteQuestion);
+    $(".btnStartPaper").on("click", function(){
+        $("#startModal").modal("show");
+    });
+    $('#startModal').on('shown.bs.modal', function () {
+        $("#startModal").find("#name").focus();
+    })
 });
 
 function startTest(){
