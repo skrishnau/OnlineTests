@@ -5,6 +5,10 @@
 @endsection
 
 @section('content')
+
+    @php
+        $sn = 1;
+    @endphp
     <input type="hidden" id="paperId" value="{{$paper['id']}}"/>
         <div class="col-md-12">
             <div>
@@ -15,99 +19,156 @@
                     </a>
                 </div>
                 <div class="float-end">
-                    <?php 
-                    $canShowStartBtn = !isset($paper->start_datetime); 
-                    $canShowEndBtn = isset($paper->start_datetime) && !isset($paper->end_datetime);
-                    ?>
-                    @if($canShowStartBtn)
-                        <button type="button" class="btn btn-success btnStartPaper">Start Test</button>
-                    @endif
-                    <button type="button" class="btn btn-danger btnEndPaper" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
+                    <a class="btn btn-primary" href="{{route("exam.create", $paper['id'])}}">
+                        Create Exam
+                    </a>
                     <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
                         <i class="bi bi-file-earmark-minus-fill"></i> Preview
                     </a>
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class=" ">
-                Exam Link: <a class="testLink text-decoration-none" href="{{$linkUrl}}">{{$linkUrl}}</a>
-                <br/>
-                Started On : <b class="lblStartDatetime">{{$paper->start_datetime}}</b>
-                <br/>
-                Ended On: <b class="lblEndDatetime">{{$paper->end_datetime}}</b>
-            </div>
-            <div class="mt-5">
-                @if($canEdit)
-                    <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
-                        <i class="bi bi-plus-lg"></i> Add New Question
-                    </a>
-                @endif
-            </div>
+            
 
             <div class="box box-info clearfix pad ">
-                <div class="divExams">
-                    
-                </div>
-                <div class="divQuestion">
-                    <div class="col-md-12">
-                        <table class="table table-hover mt-2 questionNumber ">
-                            @foreach($questions as $que)
-                                <tr class="questionRow movableSection" id="questionRow{{$que->id}}">
-                                    <td class="">
-                                        <input type="hidden" class="questionId" value="{{$que->id}}"/>
-                                        <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
-                                        <div>
-                                            <div class="">
-                                                <div class="float-start">
-                                                    <span class="serialNumberText">{{$que->serial_number}}</span>
-                                                </div>
-                                                <div class="float-start ms-4">
-                                                    {!! htmlspecialchars_decode($que->description) !!}
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                            @foreach($que->options as $opt)
-                                                <div class="ms-4">
-                                                    <div class="float-start">
-                                                        <input type="radio" name="que_{{$que->id}}" value="none"/>
+                <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="question-tab" data-bs-toggle="tab" data-bs-target="#question" type="button" role="tab" aria-controls="question" aria-selected="true">Questions</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam" type="button" role="tab" aria-controls="exam" aria-selected="false">Exams</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    {{-- Questions --}}
+                    <div class="tab-pane fade show active" id="question" role="tabpanel" aria-labelledby="question-tab">
+                        <h4>Questions</h4>
+                        <div class="mt-4">
+                            @if($canEdit)
+                                <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
+                                    <i class="bi bi-plus-lg"></i> Add New Question
+                                </a>
+                            @endif
+                        </div>
+                        <div class="divQuestion">
+                            <div class="col-md-12">
+                                <table class="table table-hover mt-2 questionNumber ">
+                                    @foreach($questions as $que)
+                                        <tr class="questionRow movableSection" id="questionRow{{$que->id}}">
+                                            <td class="">
+                                                <input type="hidden" class="questionId" value="{{$que->id}}"/>
+                                                <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
+                                                <div>
+                                                    <div class="">
+                                                        <div class="float-start">
+                                                            <span class="serialNumberText">{{$que->serial_number}}</span>
+                                                        </div>
+                                                        <div class="float-start ms-4">
+                                                            {!! htmlspecialchars_decode($que->description) !!}
+                                                        </div>
+                                                        <div class="clearfix"></div>
                                                     </div>
-                                                    <div class="float-start ms-3">
-                                                        {!! html_entity_decode($opt->description) !!}
-                                                    </div>
-                                                    <div class="clearfix">
-                                                    </div>
+                                                    @foreach($que->options as $opt)
+                                                        <div class="ms-4">
+                                                            <div class="float-start">
+                                                                <input type="radio" name="que_{{$que->id}}" value="none"/>
+                                                            </div>
+                                                            <div class="float-start ms-3">
+                                                                {!! html_entity_decode($opt->description) !!}
+                                                            </div>
+                                                            <div class="clearfix">
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                    <td class="divQuestionAction" style="width:200px;">
-                                        @if($canEdit)
-                                            <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
-                                            <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
-                                            <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
-                                            <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
-                                        @endif
-                                    </td>
+                                            </td>
+                                            <td class="divQuestionAction" style="width:200px;">
+                                                @if($canEdit)
+                                                    <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    {{-- <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}" class="btn btn-warning editQuestion">Delete</a> --}}
+                                                    <button class="btn btn-outline-primary moveUp" type="button" title="Move UP">↑</button>
+                                                    <button class="btn btn-outline-primary moveDown" type="button" title="Move DOWN">↓</button>
+                                                    <button class="btn btn-outline-danger remove" type="button" title="Delete Question">X</button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <div class="col-md-9">
+                               <div class="questionView">
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Exam --}}
+                    <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
+                        <div class="divExams">
+                            <h4>Examinations</h4>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th style="width:40%;">Class/Course Name </th>
+                                    <th>Start DateTime</th>
+                                    <th>End DateTime</th>
+                                    <th>Duration(mins.)</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
-                        </table>
+                                @php
+                                $notStarted = $exams->whereNull('start_datetime');
+                                $active = $exams->whereNotNull('start_datetime')->whereNull('end_datetime');
+                                $ended = $exams->whereNotNull('start_datetime')->whereNotNull('end_datetime');
+                                $sn = 1;
+                                @endphp
+                                @if($notStarted->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-primary">
+                                            Not Started
+                                        </th>
+                                    </tr>
+                                    @foreach($notStarted as $item)
+                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                    @php($sn++)
+                                    @endforeach
+                                @endif
+            
+                                @if($active->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-success">
+                                            Active
+                                        </th>
+                                    </tr>
+                                    {{-- @php($sn = 1) --}}
+                                    @foreach($active as $item)
+                                        @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                        @php($sn++)
+                                    @endforeach
+                                @endif
+            
+                                @if($ended->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-danger">
+                                            Ended
+                                        </th>
+                                    </tr>
+                                    {{-- @php($sn = 1) --}}
+                                    @foreach($ended as $item)
+                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                    @php($sn++)
+                                    @endforeach
+                                @endif
+
+                                @foreach($exams as $item)
+                               
+                                @php($sn++)
+                                @endforeach
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-md-9">
-                       <div class="questionView">
-                       </div>
-                    </div>
-                    <div class="mt-1">
-                        @if($canEdit)
-                            <a type="button" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> 0])}}" class="btn btn-primary addQuestion">
-                                <i class="bi bi-plus-lg"></i> Add New Question
-                            </a>
-                        @endif
-                    </div>
-                </div>
-                
+                  </div>
             </div>
         </div>
 
@@ -122,19 +183,7 @@
                 <div class="modal-body">
                     <div><b>Are you sure to start the test?</b></div>
 
-                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} clearfix mt-4">
-                        <label for="name" class="col-sm-4 control-label">Examination Name <i class="text-danger">*</i></label>
-                        <div class="col-sm-8">
-                            <input id="ssname" type="text" class="form-control name" name="name" value="{{ old('name') }}" required
-                                autofocus autocomplete="off">
-    
-                            @if ($errors->has('name'))
-                                <span class="help-block">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                        </span>
-                            @endif
-                        </div>
-                    </div>
+                    
                 </div>
 
                 

@@ -54,12 +54,12 @@
         </div>
             <div class="row">
 
-                 {{-- <div class="col-md-2 pt-3 bg-secondary">
+                <div class="col-md-2 pt-3 bg-secondary">
                     @section('leftmenubar')
                         @include('layout.leftmenubar')
                     @show
-                </div>  --}}
-                <div class="col-md-10 offset-md-1 bg-light ">
+                </div> 
+                <div class="col-md-10 bg-light pe-3">
                     <div class="row card ">
                         @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
                             <div class=" card-header bg-dark text-light">

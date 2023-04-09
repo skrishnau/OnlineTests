@@ -6,5 +6,9 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    //
+    public function index()
+    {
+        $courses = Course::get();
+        return view('course.index', compact('courses'));
+    }
 }

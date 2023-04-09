@@ -33,6 +33,7 @@ Route::post('/question/store', [QuestionController::class, 'store'])->name('ques
 Route::post('/question/updateSerialNumber', [QuestionController::class, 'updateSerialNumber'])->name('question.updateSerialNumber');
 Route::post('/question/destroy', [QuestionController::class, 'destroy'])->name('question.destroy');
 
+Route::get('/exam/show/{examId}', [ExamController::class, 'show'])->name('exam.show');
 Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 Route::get('/exam/success/{paperId}', [ExamController::class, 'success'])->name('exam.success');

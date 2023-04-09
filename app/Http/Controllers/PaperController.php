@@ -10,6 +10,7 @@ use App\Models\Paper;
 use App\Models\Question;
 use App\Models\Exam;
 use App\Helpers\CommonHelper;
+use App\Helpers\PaperHelper;
 
 
 class PaperController extends Controller
@@ -17,9 +18,7 @@ class PaperController extends Controller
     //
     public function index()
     {
-        $papers = Paper::
-                select('id', 'name')//, 'start_datetime as startDatetime', 'end_datetime as endDatetime', 'duration_in_mins as durationInMins')
-                ->get();
+        $papers = PaperHelper::getAllPapers();
         return view('paper.index', compact('papers'));
     }
     
@@ -31,18 +30,20 @@ class PaperController extends Controller
             $message = 'Not found!';
             return view('layout.error', compact('message'));
         }
-        $linkUrl = PaperController::getExamUrl($paper->id, $paper->link_id);
         $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->get();
+
+        $exams = Exam::where('paper_id', $paper->id)
+            ->join('courses', 'exams.course_id', '=', 'courses.id')
+            ->orderBy('start_datetime')
+            ->select('exams.*', 'courses.name as name')
+            ->get();
         $canEdit = $paper->start_datetime == null;
-        return view('paper.show', compact('paper', 'questions', 'linkUrl', 'canEdit'));
+
+        return view('paper.show', compact('paper', 'questions', 'exams', 'canEdit'));
     }
 
-    function getExamUrl($paperId, $linkId)
-    {
-        return route('exam.create', ['paperId' => $paperId, 'code'=> $linkId]); //CommonHelper::getBaseUrl() . '/exam/'. $linkId;
-    }
     
     public function create()
     {
@@ -108,25 +109,7 @@ class PaperController extends Controller
     }
     public function startTest(Request $request)
     {
-        $data = $request->all();
-        $paper = Paper::find($data['paperId']);
-        if(isset($paper->start_datetime)){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This paper\'s exam has already been started! Reload!'
-            ]);
-        }
-        $paper->start_datetime = Carbon::now();
-        // TODO: also store deadline, exam-duration inputs
-        $paper->save();
         
-        return response()->json([
-            'status' => 'success',
-            'message' => "Started successfully!",
-            'data' => [
-                'startDatetime' => $paper->start_datetime,
-            ]
-        ]);
     }
     
     public function endTest(Request $request)
@@ -150,6 +133,12 @@ class PaperController extends Controller
             ]
         ]);
     }
+    
+    public function clone($paperId)
+    {
+
+    }
+
     
 
     public function update(Request $request, Algorithm $algorithm)

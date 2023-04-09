@@ -3,9 +3,9 @@
         {{$sn}}
     </td>
     <td>
-        <a class="text-decoration-none " href="{{route('paper.show', ['id' => $item->id])}}">{{$item->name}}</a>
+        <a class="text-decoration-none " href="{{route('exam.show', ['examId' => $item->id])}}">{{$item->name}}</a>
     </td>
-    {{-- <td>
+    <td>
         {{$item->startDatetime}}
     </td>
     <td>
@@ -13,8 +13,8 @@
     </td>
     <td>
         {{$item->durationInMins}}
-    </td> --}}
+    </td>
     <td>
-        <a href="{{route('paper.show', ['id' => $item->id])}}">View</a>
+        <a href="{{route('exam.show', ['examId' => $item->id])}}">View</a>
     </td>
 </tr>

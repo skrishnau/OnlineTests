@@ -22,7 +22,7 @@ class CreateExamsTable extends Migration
             $table->unsignedBigInteger('paper_id');
             $table->foreign('paper_id')->references('id')->on('papers');
 
-            $table->string('type'); // anonymous or signed users 
+            $table->smallInteger('type'); // 1: anonymous or 2: signed users 
 
             $table->dateTime('start_datetime')->nullable();
             $table->dateTime('end_datetime')->nullable();

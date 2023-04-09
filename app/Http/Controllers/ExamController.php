@@ -4,77 +4,77 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 use App\Models\Paper;
 use App\Models\Question;
 use App\Models\Exam;
 use App\Models\Answer;
+use App\Models\Course;
+use App\Models\Candidate;
+use App\Helpers\CommonHelper;
 
 class ExamController extends Controller
 {
-    //
-    public function create($paperId, Request $request)
+    public function show($examId)
     {
-        $show = $request->input('show');
-        $paper = Paper::where('id', $paperId)->first();
-        if(!$paper){
-            $message = 'Not found!';
-            return view('layout.error', compact('message'));
-        }
-        $isPreview = false;
-        // NOTE: in case of examination we should not show breadcrumbs and other links of the site
-        $showBreadCrumbs = true;
-        if($show == null){
-            // its an exam (not a preview)
-            if($paper->start_datetime == null){
-                $message = 'This exam has not been started yet.';
-                return view('layout.error', compact('message'));    
-            }
-            if($paper->end_datetime !== null){
-                $message = 'This exam has already ended.';
-                return view('layout.error', compact('message'));    
-            }
-            // NOTE: if it's an actual exam then there must be 'code' param present in the url 
-            if($paper->link_id != $request->input('code')){
-                $message = 'Not found!';
-                return view('layout.error', compact('message'));  
-            }
-            // don't show breadcrumbs
-            $showBreadCrumbs = false;
-        } else if($show == 'preview') {
-            // its a preview
-            $isPreview = true;
-        } else {
-            $message = 'Not found!';
-            return view('layout.error', compact('message'));
-        }
-        $questions = Question::where('paper_id', $paper->id)
-            ->orderBy('serial_number', 'asc')
+        $exam = Exam::find($examId);
+        $linkUrl = ExamController::getExamUrl($exam->paper->id, $exam->link_id);
+        $candidates = Candidate::where('exam_id', $examId)
             ->get();
-        return view('exam.create', compact('paper', 'questions', 'isPreview', 'showBreadCrumbs'));
+        return view('exam.show', compact('exam', 'linkUrl', 'candidates'));
+    }
+    
+    function getExamUrl($paperId, $linkId)
+    {
+        return route('exam.create', ['paperId' => $paperId, 'code'=> $linkId]); //CommonHelper::getBaseUrl() . '/exam/'. $linkId;
+    }
+    public function create($paperId)
+    {
+        $paper = Paper::find($paperId);
+        return view("exam.create", compact('paper'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        $exam = Exam::create([
-            'candidate_name' => $data['candidateName'],
-            'candidate_email' => $data['candidateEmail'],
-            'paper_id' => $data['paperId'],
-        ]);
-        foreach($data['answers'] as $ans){
-            $answerEntity = Answer::create([
-                'exam_id' => $exam->id,
-                'question_id' => $ans['questionId'],
-                'selected_option_id' => isset($ans['optionId']) ? $ans['optionId'] : null,
-                'answer_text' => isset($ans['optionId']) ? null : (isset($ans['answerText']) ? $ans['answerText'] : null)
+        $paper = Paper::find($data['paperId']);
+        if(isset($paper->start_datetime)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This paper\'s exam has already been started! Reload!'
             ]);
         }
+        
+        // $paper->start_datetime = Carbon::now();
+        // // TODO: also store deadline, exam-duration inputs
+        // $paper->save();
+        $course = null;
+        if(isset($data['courseId'] )){
+            $course = Course::first($data['courseId']);
+        } else {
+            $course = Course::firstOrCreate([
+                'name' => $data['course']
+            ]);
+        }
+        
+
+        $exam = Exam::create([
+            'course_id' => $course->id,
+            'paper_id' => $data['paperId'],
+            'type' => $data['type'],
+            //'start_datetime' => Carbon::now(),
+            'end_datetime' => null,
+            'duration_in_mins' => isset($data['durationInMins']) ? $data['durationInMins'] : null,
+            'link_id' => CommonHelper::generateRandomString()
+        ]);
+        
         return response()->json([
             'status' => 'success',
-            'message' => "Submitted successfully!",
+            'message' => "Started successfully!",
             'data' => [
-                'redirectUrl' => route('exam.success', $data['paperId'])
+                'startDatetime' => $paper->start_datetime,
+                'redirectUrl' => route("paper.show", ['paperId' => $data['paperId']])
             ]
         ]);
     }

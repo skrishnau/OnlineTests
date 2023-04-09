@@ -4,6 +4,9 @@ namespace App\Helpers;
 
 class CommonHelper
 {
+    //const $ANONYMOUS = 1;
+    //const $REGISTERED = 2;
+
     public static function isEditMode($id)
     {
         return ($id) 

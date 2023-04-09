@@ -12,6 +12,16 @@ class Exam extends Model
     protected $guarded = [];
 
     public function questions() {
-    	return $this->hasMany(\App\Model\Answer::class);
+    	return $this->hasMany(\App\Models\Answer::class);
+    }
+
+    public function paper()
+    {
+        return $this->belongsTo(\App\Models\Paper::class);
+    }
+    
+    public function course()
+    {
+        return $this->belongsTo(\App\Models\Course::class);
     }
 }

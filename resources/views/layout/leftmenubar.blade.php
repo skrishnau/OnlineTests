@@ -21,8 +21,17 @@
 </div> --}}
 
 {{-- SETUP --}}
-<div class="text-uppercase bg-secondary" style="padding-top: 1px; width: 100%;">
-	<div class="card-header bg-dark text-light">SETUP</div>
+<div class="text-uppercase bg-secondary text-light" style="padding-top: 1px; width: 100%;">
+	{{-- <div class="card-header bg-dark text-light">Papers</div> --}}
+	<div class="">Papers</div>
+	<div class="list-group">
+	</div>
+	<div class="">Exams</div>
+	<div class="list-group">
+	</div>
+	<div class="">Candidates</div>
+	<div class="list-group">
+	</div>
 	<div class="list-group">
 	{{--<a class="list-group-item {{$controller == 'questionpaper' ? 'list-group-item-success':''}}" href="{{route('questionpaper.index')}}">Question Papers</a>--}}
 		{{-- <a class="list-group-item list-group-item-secondary {{$controller == 'school' ? 'list-group-item-success':''}}" href="{{route('school.index')}}">Schools</a>
