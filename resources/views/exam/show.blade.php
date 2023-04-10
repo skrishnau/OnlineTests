@@ -6,7 +6,7 @@
 
 @section('content')
     <input type="hidden" id="paperId" value="{{$exam->paper->id}}"/>
-    <input type="hidden" id="paperId" value="{{$exam->id}}"/>
+    <input type="hidden" id="examId" value="{{$exam->id}}"/>
         <div class="col-md-12">
             <div>
                 <div class="float-start">
@@ -19,9 +19,9 @@
                     $canShowEndBtn = isset($exam->start_datetime) && !isset($exam->end_datetime);
                     ?>
                     @if($canShowStartBtn)
-                        <button type="button" class="btn btn-success btnStartPaper">Start Test</button>
+                        <button type="button" class="btn btn-success btnStartExam">Start Test</button>
                     @endif
-                    <button type="button" class="btn btn-danger btnEndPaper" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
+                    <button type="button" class="btn btn-danger btnEndExam" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
                     <a type="button" href="{{route('exam.create', ['paperId'=> $exam->paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
                         <i class="bi bi-file-earmark-minus-fill"></i> Preview
                     </a>

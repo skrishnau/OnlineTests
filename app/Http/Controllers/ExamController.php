@@ -46,9 +46,8 @@ class ExamController extends Controller
             ]);
         }
         
-        // $paper->start_datetime = Carbon::now();
         // // TODO: also store deadline, exam-duration inputs
-        // $paper->save();
+
         $course = null;
         if(isset($data['courseId'] )){
             $course = Course::first($data['courseId']);
@@ -58,6 +57,13 @@ class ExamController extends Controller
             ]);
         }
         
+        $linkId = null;
+        while(!$linkId) {
+            $linkId = CommonHelper::generateRandomString();
+            if(Paper::where('link_id', $linkId)->count() > 0){
+                $linkId = null;
+            }
+        }
 
         $exam = Exam::create([
             'course_id' => $course->id,
@@ -66,7 +72,7 @@ class ExamController extends Controller
             //'start_datetime' => Carbon::now(),
             'end_datetime' => null,
             'duration_in_mins' => isset($data['durationInMins']) ? $data['durationInMins'] : null,
-            'link_id' => CommonHelper::generateRandomString()
+            'link_id' => $linkId
         ]);
         
         return response()->json([
@@ -74,19 +80,63 @@ class ExamController extends Controller
             'message' => "Started successfully!",
             'data' => [
                 'startDatetime' => $paper->start_datetime,
-                'redirectUrl' => route("paper.show", ['paperId' => $data['paperId']])
+                'redirectUrl' => route("paper.show", ['id' => $data['paperId']])
             ]
         ]);
     }
 
-    public function success($paperId)
+    public function startTest(Request $request)
     {
-        $paper = Paper::where('id', $paperId)->first();
-        if(!$paper){
+        $data = $request->all();
+        $exam = Exam::find($data['examId']);
+        if(isset($exam->start_datetime)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This exam has already started! Reload!'
+            ]);
+        }
+        $exam->start_datetime = Carbon::now();
+        $exam->save();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => "Started successfully!",
+            'data' => [
+                'startDatetime' => $exam->start_datetime,
+            ]
+        ]);
+    }
+    
+    public function endTest(Request $request)
+    {
+        $data = $request->all();
+        $exam = Exam::find($data['examId']);
+        if(isset($exam->end_datetime)){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This paper\'s exam has already ended! Reload!'
+            ]);
+        }
+        $exam->end_datetime = Carbon::now();
+        $exam->save();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => "Ended successfully!",
+            'data' => [
+                'endDatetime' => $paper->end_datetime,
+            ]
+        ]);
+    }
+
+    public function success($examId)
+    {
+        $exam = Exam::where('id', $examId)->first();
+        if(!$exam){
             $message = 'Not found!';
             return view('layout.error', compact('message'));
         }
-        return view('exam.success', compact('paper'));
+        return view('exam.success', compact('exam'));
     }
 
 }

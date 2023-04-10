@@ -5,6 +5,7 @@ $(document).ready(function(){
 
 function examCreate(e){
     e.preventDefault();
+    blockWindow();
     const name = $(this).find(".name").val();
     const type = $(this).find(".type").val();
     const paperId = $(this).find(".paperId").val();

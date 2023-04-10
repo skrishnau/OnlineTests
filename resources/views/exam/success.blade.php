@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('title')
-    {{$paper->name}}
+    {{$exam->paper->name}}
 @endsection
 
 @section('content')

@@ -25,8 +25,6 @@ Route::get('/paper/create', [PaperController::class, 'create'])->name('paper.cre
 Route::get('/paper/edit/{id}', [PaperController::class, 'edit'])->name('paper.edit');
 Route::post('/paper/store', [PaperController::class, 'store'])->name('paper.store');
 Route::get('/paper/show/{id}', [PaperController::class, 'show'])->name('paper.show');
-Route::post('/paper/startTest', [PaperController::class, 'startTest'])->name('paper.startTest');
-Route::post('/paper/endTest', [PaperController::class, 'endTest'])->name('paper.endTest');
 
 Route::get('/question/create/{paperId}/{questionId}', [QuestionController::class, 'create'])->name('question.create');
 Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
@@ -37,5 +35,7 @@ Route::get('/exam/show/{examId}', [ExamController::class, 'show'])->name('exam.s
 Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 Route::get('/exam/success/{paperId}', [ExamController::class, 'success'])->name('exam.success');
+Route::post('/exam/startTest', [ExamController::class, 'startTest'])->name('exam.startTest');
+Route::post('/exam/endTest', [ExamController::class, 'endTest'])->name('exam.endTest');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

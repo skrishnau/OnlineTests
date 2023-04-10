@@ -81,16 +81,8 @@ class PaperController extends Controller
                 ]
             );
         } else {
-            // $linkId = null;
-            // while(!$linkId) {
-            //     $linkId = CommonHelper::generateRandomString();
-            //     if(Paper::where('link_id', $linkId)->count() > 0){
-            //         $linkId = null;
-            //     }
-            // }
             $paper = Paper::create([
                 "name" => $data["name"],
-                //'link_id' => $linkId
             ]);
         }
         return redirect()->route('paper.show', $paper->id);
@@ -107,32 +99,7 @@ class PaperController extends Controller
             return view('layout.error', compact('message'));
         }
     }
-    public function startTest(Request $request)
-    {
-        
-    }
-    
-    public function endTest(Request $request)
-    {
-        $data = $request->all();
-        $paper = Paper::find($data['paperId']);
-        if(isset($paper->end_datetime)){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This paper\'s exam has already ended! Reload!'
-            ]);
-        }
-        $paper->end_datetime = Carbon::now();
-        $paper->save();
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => "Ended successfully!",
-            'data' => [
-                'endDatetime' => $paper->end_datetime,
-            ]
-        ]);
-    }
+   
     
     public function clone($paperId)
     {
