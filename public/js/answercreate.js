@@ -24,6 +24,20 @@ $(document).ready(function(){
     $(".examSubmit").on("click", examSubmit);
 
     showTimer();
+    const displayId =$(".displayId").val();
+    if(true){// displayId == 1
+        // show one at a time
+        const queSections = $(".queSection").hide();
+        $(".nextButtons").show();
+
+        if(queSections.length > 0){
+            $(queSections[0]).show().addClass("active");
+        }
+    }
+
+    $(".examNext").on("click", examNext);
+    $(".examPrevious").on("click", examPrevious);
+
     
 });
 
@@ -107,4 +121,14 @@ function examSubmit(){
         } 
     });
 
+}
+
+function examPrevious(){
+
+}
+
+function examNext(){
+    const active = $(".queSection.active").removeClass("active").hide();
+    const sn = +active.data("sn");
+    $(`.queSection[data-sn='${sn+1}'`).show().addClass("active");
 }

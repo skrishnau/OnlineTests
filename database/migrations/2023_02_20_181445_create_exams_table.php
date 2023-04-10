@@ -23,6 +23,7 @@ class CreateExamsTable extends Migration
             $table->foreign('paper_id')->references('id')->on('papers');
 
             $table->smallInteger('type'); // 1: anonymous or 2: signed users 
+            $table->smallInteger('display'); // 1: all in one page, 2: one at a time, 3: one at a time with grouping
 
             $table->dateTime('start_datetime')->nullable();
             $table->dateTime('end_datetime')->nullable();

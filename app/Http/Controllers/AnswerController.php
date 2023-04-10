@@ -71,6 +71,8 @@ class AnswerController extends Controller
                 'candidate_email' => $data['candidateEmail'],
                 'exam_id' => $data['examId'],
             ]);
+        } else {
+            // user id is available in the login session, get candidate from the session
         }
         
         foreach($data['answers'] as $ans){
