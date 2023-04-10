@@ -19,15 +19,15 @@ class ExamController extends Controller
     public function show($examId)
     {
         $exam = Exam::find($examId);
-        $linkUrl = ExamController::getExamUrl($exam->paper->id, $exam->link_id);
+        $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
         $candidates = Candidate::where('exam_id', $examId)
             ->get();
         return view('exam.show', compact('exam', 'linkUrl', 'candidates'));
     }
     
-    function getExamUrl($paperId, $linkId)
+    function getExamUrl($examId, $linkId)
     {
-        return route('exam.create', ['paperId' => $paperId, 'code'=> $linkId]); //CommonHelper::getBaseUrl() . '/exam/'. $linkId;
+        return route('answer.create', ['examId' => $examId, 'code'=> $linkId]); //CommonHelper::getBaseUrl() . '/exam/'. $linkId;
     }
     public function create($paperId)
     {
@@ -124,19 +124,10 @@ class ExamController extends Controller
             'status' => 'success',
             'message' => "Ended successfully!",
             'data' => [
-                'endDatetime' => $paper->end_datetime,
+                'endDatetime' => $exam->end_datetime,
             ]
         ]);
     }
 
-    public function success($examId)
-    {
-        $exam = Exam::where('id', $examId)->first();
-        if(!$exam){
-            $message = 'Not found!';
-            return view('layout.error', compact('message'));
-        }
-        return view('exam.success', compact('exam'));
-    }
 
 }

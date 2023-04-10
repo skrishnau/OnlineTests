@@ -53,13 +53,14 @@
                         <th>Duration(mins.)</th>
                         <th>Action</th>
                     </tr>
+                    @php($sn = 1)
                     @foreach($candidates as $item)
                     <tr>
                         <td>
                             {{$sn}}
                         </td>
                         <td>
-                            <a class="text-decoration-none " href="{{route('candidate.show', ['id' => $item->id])}}">{{$item->name}}</a>
+                            <a class="text-decoration-none " href="{{route('candidate.show', ['id' => $item->id])}}">{{$item->candidate_name}}</a>
                         </td>
                         <td>
                             {{$item->score}}

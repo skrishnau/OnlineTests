@@ -1,21 +1,25 @@
 @extends('layout.app')
 
 @section('title')
-    {{$paper->name}}
+    {{$exam->paper->name}}
 @endsection
 
 @section('content')
     <div class="col-md-12">
         {{-- to block the window (show loading icon) on page load. need to ublock from js after document.ready--}}
         <?php $blockWindow = true;?>
-        <input type="hidden" class="paperId" value="{{$paper->id}}"/>
+        <input type="hidden" class="paperId" value="{{$exam->paper->id}}"/>
+        <input type="hidden" class="examId" value="{{$exam->id}}"/>
         @if($isPreview)
             <div class="mb-1 text-center bg-warning">
                 Examination Preview
             </div>
         @endif
         <div class="">
-            <h3 class="float-start">{{$paper['name']}}</h3>
+            <div class="float-start">
+                <h3 class="">{{$exam->name}}</h3>
+                <h3 class="">{{$exam->paper->name}}</h3>
+            </div>
             <div class="float-end" >
                 Questions: {{$questions->count()}}
                 {{-- <br>
@@ -131,5 +135,5 @@
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script src="{{asset("js/ckeditorconfig.js")}}"></script>
-    <script src="{{asset("js/examtake.js")}}"></script>
+    <script src="{{asset("js/answercreate.js")}}"></script>
 @endsection

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaperController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\AnswerController;
 
 
 /*
@@ -34,8 +35,14 @@ Route::post('/question/destroy', [QuestionController::class, 'destroy'])->name('
 Route::get('/exam/show/{examId}', [ExamController::class, 'show'])->name('exam.show');
 Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('exam.create');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
-Route::get('/exam/success/{paperId}', [ExamController::class, 'success'])->name('exam.success');
 Route::post('/exam/startTest', [ExamController::class, 'startTest'])->name('exam.startTest');
 Route::post('/exam/endTest', [ExamController::class, 'endTest'])->name('exam.endTest');
+
+
+Route::get('/answer/create/{examId}', [AnswerController::class, 'create'])->name('answer.create');
+Route::post('/answer/store', [AnswerController::class, 'store'])->name('answer.store');
+Route::get('/answer/success/{examId}', [AnswerController::class, 'success'])->name('answer.success');
+
+Route::get('/candidate/show/{id}', [CandidateController::class, 'success'])->name('candidate.show');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');

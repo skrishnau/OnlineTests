@@ -41,6 +41,7 @@ function examSubmit(){
     blockWindow();
     var $this = $(this);
     var paperId = $(".paperId").val();
+    var examId = $(".examId").val();
     let candidateName = $(".candidateName").val();
     //let candidateId = $(".candidateId").val();
     let candidateEmail = $(".candidateEmail").val();
@@ -61,7 +62,6 @@ function examSubmit(){
     var answers = [];
     var unfilledQuestions = [];
     $(".questionRow").each((index, value) => {
-        debugger;
         let questionId = $(value).find(".questionId").val();
         let answerText = null;
         let optionId = null;
@@ -93,12 +93,13 @@ function examSubmit(){
     }
     let data = {
         "paperId": paperId,
+        "examId": examId,
         //"candidateId": candidateId,
         "candidateName": candidateName,
         "candidateEmail": candidateEmail,
         "answers": answers
     };
-    $.post("/exam/store", (data), function(response){
+    $.post("/answer/store", (data), function(response){
         unblockWindow();
         notify(response.status, response.message);
         if(response.status == 'success'){
