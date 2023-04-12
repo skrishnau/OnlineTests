@@ -20,9 +20,13 @@
                     ?>
                     @if($canShowStartBtn)
                         <button type="button" class="btn btn-success btnStartExam">Start Test</button>
+                        <button type="button" class="btn btn-light btnDelete">
+                            <i class="bi bi-trash"></i>
+                            Delete
+                        </button>
                     @endif
                     <button type="button" class="btn btn-danger btnEndExam" data-bs-toggle="modal" data-bs-target="#endModal" style="display:{{$canShowEndBtn ? "inline" : "none" }};">End Test</button>
-                    <a type="button" href="{{route('exam.create', ['paperId'=> $exam->paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
+                    <a type="button" href="{{route('answer.create', ['examId'=> $exam->id, 'paperId'=> $exam->paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
                         <i class="bi bi-file-earmark-minus-fill"></i> Preview
                     </a>
                 </div>

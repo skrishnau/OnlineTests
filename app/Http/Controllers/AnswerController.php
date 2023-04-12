@@ -8,21 +8,25 @@ use App\Models\Exam;
 use App\Models\Question;
 use App\Models\Candidate;
 use App\Models\Answer;
+use App\Models\Paper;
 
 class AnswerController extends Controller
 {
     public function create($examId, Request $request)
     {
         $show = $request->input('show');
-        $exam = Exam::where('id', $examId)->first();
-        if(!$exam){
-            $message = 'Not found!';
-            return view('layout.error', compact('message'));
-        }
+        
         $isPreview = false;
         // NOTE: in case of examination we should not show breadcrumbs and other links of the site
         $showBreadCrumbs = true;
+        $exam = null;
+        $paper = null;
         if($show == null){
+            $exam = Exam::where('id', $examId)->first();
+            if(!$exam){
+                $message = 'Not found!';
+                return view('layout.error', compact('message'));
+            }
             // its an exam (not a preview)
             if($exam->start_datetime == null){
                 $message = 'This exam has not been started yet.';
@@ -37,19 +41,25 @@ class AnswerController extends Controller
                 $message = 'Not found!';
                 return view('layout.error', compact('message'));  
             }
+            $paper = $exam->paper;
             // don't show breadcrumbs
             $showBreadCrumbs = false;
         } else if($show == 'preview') {
             // its a preview
             $isPreview = true;
+            $paper = Paper::find($request->input("paperId"));
+            $exam = new Exam;
+            $exam->name = "Sample Exam";
+            $exam->display = 1;
+            $exam->type = 1;
         } else {
             $message = 'Not found!';
             return view('layout.error', compact('message'));
         }
-        $questions = Question::where('paper_id', $exam->paper_id)
+        $questions = Question::where('paper_id', $paper->id)
             ->orderBy('serial_number', 'asc')
             ->get();
-        return view('answer.create', compact('exam', 'questions', 'isPreview', 'showBreadCrumbs'));
+        return view('answer.create', compact('exam', 'paper', 'questions', 'isPreview', 'showBreadCrumbs'));
     }
 
     public function store(Request $request)

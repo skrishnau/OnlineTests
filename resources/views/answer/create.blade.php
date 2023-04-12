@@ -1,14 +1,14 @@
 @extends('layout.app')
 
 @section('title')
-    {{$exam->paper->name}}
+    {{$paper->name}}
 @endsection
 
 @section('content')
     <div class="col-md-12">
         {{-- to block the window (show loading icon) on page load. need to ublock from js after document.ready--}}
         <?php $blockWindow = true;?>
-        <input type="hidden" class="paperId" value="{{$exam->paper->id}}"/>
+        <input type="hidden" class="paperId" value="{{$paper->id}}"/>
         <input type="hidden" class="examId" value="{{$exam->id}}"/>
         <input type="hidden" class="displayId" value="{{$exam->display}}"/>
         @php($isSingleDisplay = $exam->display == 2 || $exam->display == 3)
@@ -21,7 +21,7 @@
         <div class="">
             <div class="float-start">
                 <h3 class="">{{$exam->name}}</h3>
-                <h3 class="">{{$exam->paper->name}}</h3>
+                <h3 class="">{{$paper->name}}</h3>
             </div>
             <div class="float-end" >
                 Questions: {{$questions->count()}}
@@ -134,14 +134,16 @@
                     @php($sectionIndex++)
                 @endforeach
             </div>
-            <div class="col-md-12 mt-5 divNextPrevious">
+            <div class="col-md-12 mt-5">
                 <hr>
                 <div align="right">
                     <span class="divSubmit">
                         <button type="button" class="btn btn-success examSubmit {{$isPreview ? "disabled" : ""}}">Submit</button>
                     </span>
-                    <button type="button" class="btn btn-primary examPrevious" disabled>Previous</button>
-                    <button type="button" class="btn btn-primary examNext">Next</button>
+                    <span class="divNextPrevious">
+                        <button type="button" class="btn btn-primary examPrevious" disabled>Previous</button>
+                        <button type="button" class="btn btn-primary examNext">Next</button>
+                    </span>
                 </div>
             </div>
         </div>

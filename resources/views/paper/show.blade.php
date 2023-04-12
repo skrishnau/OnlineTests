@@ -22,7 +22,7 @@
                     <a class="btn btn-primary" href="{{route("exam.create", $paper['id'])}}">
                         Create Exam
                     </a>
-                    <a type="button" href="{{route('exam.create', ['paperId'=> $paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
+                    <a type="button" href="{{route('answer.create', ['examId' => 0, 'paperId'=> $paper->id, 'show' => 'preview'])}}" class="btn btn-primary">
                         <i class="bi bi-file-earmark-minus-fill"></i> Preview
                     </a>
                 </div>
