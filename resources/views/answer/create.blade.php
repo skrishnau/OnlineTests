@@ -11,6 +11,8 @@
         <input type="hidden" class="paperId" value="{{$exam->paper->id}}"/>
         <input type="hidden" class="examId" value="{{$exam->id}}"/>
         <input type="hidden" class="displayId" value="{{$exam->display}}"/>
+        @php($isSingleDisplay = $exam->display == 2 || $exam->display == 3)
+        <input type="hidden" class="isSingleDisplay" value="{{$isSingleDisplay}}" />
         @if($isPreview)
             <div class="mb-1 text-center bg-warning">
                 Examination Preview
@@ -34,11 +36,11 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        @php($sectionNo = 1)
+        @php($sectionIndex = 0)
         <div class="box box-info float-none pad ">
             <div class="col-md-12 mt-5">
                 @if($exam->type == 1)
-                <div class="queSection" data-sn = '{{$sectionNo}}'>
+                <div class="queSection" data-index = '{{$sectionIndex}}'>
                     {{-- Anonymous type --}}
                     <div class="form-group{{ $errors->has('candidateName') ? ' has-error' : '' }} clearfix">
                         <label for="candidateName" class="col-sm-4 control-label">Name</label>
@@ -65,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                @php($sectionNo++)
+                @php($sectionIndex++)
                 @endif
                 {{-- <div class="form-group{{ $errors->has('candidateId') ? ' has-error' : '' }} clearfix">
                     <label for="candidateId" class="col-sm-4 control-label">ID/Roll</label>
@@ -82,7 +84,7 @@
                 </div> --}}
 
                 <div class="mt-4 mb-4">
-                    <h4>Questions</h3>
+                    {{-- <h4>Questions</h3> --}}
                 </div>
                 <div class="float-start">
                     {{-- @foreach($groups as $grp)
@@ -92,7 +94,7 @@
                     @endforeach --}}
                 </div>
                 @foreach($questions as $que)
-                    <div class="questionRow queSection" id="questionRow{{$que->id}}" data-sn="{{$sectionNo}}">
+                    <div class="questionRow queSection" id="questionRow{{$que->id}}" data-index="{{$sectionIndex}}">
                         <input type="hidden" class="questionId" value="{{$que->id}}"/>
                         <input type="hidden" name="serialNumber" class="serialNumber" value="{{$que->serial_number}}"/>
                         <div class="">
@@ -129,19 +131,15 @@
                             </div>
                         @endif
                     </div>
-                    @php($sectionNo++)
+                    @php($sectionIndex++)
                 @endforeach
             </div>
-            <div class="col-md-12 mt-5">
+            <div class="col-md-12 mt-5 divNextPrevious">
                 <hr>
                 <div align="right">
-                    <button type="button" class="btn btn-primary examSubmit {{$isPreview ? "disabled" : ""}}">Submit</button>
-                </div>
-            </div>
-            
-            <div class="col-md-12 mt-5">
-                <hr>
-                <div align="right">
+                    <span class="divSubmit">
+                        <button type="button" class="btn btn-success examSubmit {{$isPreview ? "disabled" : ""}}">Submit</button>
+                    </span>
                     <button type="button" class="btn btn-primary examPrevious" disabled>Previous</button>
                     <button type="button" class="btn btn-primary examNext">Next</button>
                 </div>

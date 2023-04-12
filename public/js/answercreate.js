@@ -24,20 +24,20 @@ $(document).ready(function(){
     $(".examSubmit").on("click", examSubmit);
 
     showTimer();
-    const displayId =$(".displayId").val();
-    if(true){// displayId == 1
+    const isSingleDisplay =$(".isSingleDisplay").val();
+    if(isSingleDisplay == "true"){
         // show one at a time
         const queSections = $(".queSection").hide();
-        $(".nextButtons").show();
-
-        if(queSections.length > 0){
-            $(queSections[0]).show().addClass("active");
-        }
+        $(".divNextPrevious").show();
+        $(".divSubmit").hide();
+        examNext();
+    } else {
+        $(".divNextPrevious").remove();
+        $(".divSubmit").show();
     }
 
     $(".examNext").on("click", examNext);
     $(".examPrevious").on("click", examPrevious);
-
     
 });
 
@@ -124,11 +124,31 @@ function examSubmit(){
 }
 
 function examPrevious(){
-
+    moveToAnotherQuestion(-1);
 }
 
 function examNext(){
-    const active = $(".queSection.active").removeClass("active").hide();
-    const sn = +active.data("sn");
-    $(`.queSection[data-sn='${sn+1}'`).show().addClass("active");
+    moveToAnotherQuestion(1);
+}
+
+function moveToAnotherQuestion(moveIndex){
+    const active = $(".queSection.active");
+    const newIndex = active.length == 0 ? 0 : (+active.data("index") + moveIndex);
+    const another = $(`.queSection[data-index='${newIndex}'`);
+    if(another.length > 0) {
+        active.removeClass("active").hide();
+        another.show().addClass("active");
+    } 
+    if($(`.queSection[data-index='${newIndex + 1}'`).length == 0) {
+        $(".divSubmit").show();
+        $(".examNext").prop("disabled", "disabled");
+    } else {
+        $(".divSubmit").hide();
+        $(".examNext").prop("disabled", "");
+    }
+    if($(`.queSection[data-index='${newIndex - 1}'`). length == 0) {
+        $(".examPrevious").prop("disabled", "disabled");
+    } else {
+        $(".examPrevious").prop("disabled", "");
+    }
 }
