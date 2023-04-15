@@ -46,3 +46,7 @@ Route::get('/answer/success/{examId}', [AnswerController::class, 'success'])->na
 Route::get('/candidate/show/{id}', [CandidateController::class, 'success'])->name('candidate.show');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

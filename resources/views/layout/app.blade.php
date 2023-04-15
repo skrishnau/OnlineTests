@@ -34,52 +34,45 @@
     {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-dark">
 
 {{-- Navbar here ? --}}
-            {{-- @include('layout.navbar') --}}
+             @include('layout.navbar') 
     <div class="loadingBackground" style="{{isset($blockWindow) && $blockWindow ? "" : "display:none;"}} background-color:rgba(54, 51, 47, 0.5); position:fixed; left:0; top:0;z-index:1000; width:100%; height:100%;">
         {{-- style="position: fixed;  height:100%; width:100%;text-align:center;" --}}
         <div class="loader" style="position:fixed; left:45%; top:45%; z-index:1000;"></div> 
     </div>
     <div class="container-fluid flex-center position-ref full-height">
-       {{--  <div class="content">
-
-        </div> --}}
-
         <div class="content" style="min-height: 100%;">
-        <div class="row text-light bg-dark " >
-            <!-- style="height: 70px;" -->
-            @include('layout.menubar')
-        </div>
-            <div class="row">
-
-                <div class="col-md-2 pt-3 bg-secondary">
-                    @section('leftmenubar')
-                        @include('layout.leftmenubar')
-                    @show
-                </div> 
-                <div class="col-md-10 bg-light pe-3">
-                    <div class="row card ">
-                        @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
-                            <div class=" card-header bg-dark text-light">
-                                {{-- <h3>
-                                    @yield('heading')
-                                </h3> --}}
-                                <a class="text-light" href="{{route("paper.index")}}">All Papers</a>
-                            </div>
-                        @endif
-                        <div class="card-body content">
-                            {{-- Contents --}}
-                            @yield('content')
-                            <div id="push"></div>
+        {{-- @include('layout.menubar') --}}
+        <div class="row bg-dark">
+            {{-- <div class="col-md-2 pt-3 bg-secondary">
+                @section('leftmenubar')
+                    @include('layout.leftmenubar')
+                @show
+            </div>  --}}
+            <div class="col-md-10 offset-md-1 bg-light pe-3">
+                <div class="row card ">
+                    @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
+                        <div class=" card-header bg-dark text-light">
+                            {{-- <h3>
+                                @yield('heading')
+                            </h3> --}}
+                            BreadCrum goes here
+                            <a class="text-light" href="{{route("paper.index")}}">All Papers</a>
                         </div>
+                    @endif
+                    <div class="card-body content">
+                        {{-- Contents --}}
+                        @yield('content')
+                        <div id="push"></div>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
     </div>
-    <div class="footer" style="min-height:100px; background-color:black; color:white;">
+    <div class="text-center footer bg-dark text-light mt-5" style="min-height:90px;">
         Online Test
     </div>
 
