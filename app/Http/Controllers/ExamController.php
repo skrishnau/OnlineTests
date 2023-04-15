@@ -38,13 +38,13 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $paper = Paper::find($data['paperId']);
-        if(isset($paper->start_datetime)){
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This paper\'s exam has already been started! Reload!'
-            ]);
-        }
+        //$paper = Paper::find($data['paperId']);
+        // if(isset($paper->start_datetime)){
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'This paper\'s exam has already been started! Reload!'
+        //     ]);
+        // }
         
         // // TODO: also store deadline, exam-duration inputs
 
@@ -60,7 +60,7 @@ class ExamController extends Controller
         $linkId = null;
         while(!$linkId) {
             $linkId = CommonHelper::generateRandomString();
-            if(Paper::where('link_id', $linkId)->count() > 0){
+            if(Exam::where('link_id', $linkId)->count() > 0){
                 $linkId = null;
             }
         }
@@ -69,6 +69,7 @@ class ExamController extends Controller
             'course_id' => $course->id,
             'paper_id' => $data['paperId'],
             'type' => $data['type'],
+            'display' => $data['display'],
             //'start_datetime' => Carbon::now(),
             'end_datetime' => null,
             'duration_in_mins' => isset($data['durationInMins']) ? $data['durationInMins'] : null,
@@ -77,9 +78,9 @@ class ExamController extends Controller
         
         return response()->json([
             'status' => 'success',
-            'message' => "Started successfully!",
+            'message' => "Created successfully!",
             'data' => [
-                'startDatetime' => $paper->start_datetime,
+                'startDatetime' => $exam->start_datetime,
                 'redirectUrl' => route("paper.show", ['id' => $data['paperId']])
             ]
         ]);
