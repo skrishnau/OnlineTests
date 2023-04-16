@@ -23,10 +23,6 @@ class ExamController extends Controller
         $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
         $candidates = Candidate::where('exam_id', $examId)
             ->get();
-        // $exam->typeName = $exam->type == 1
-        //     ? 'Anonymous'
-        //     : 'Authorized';
-        var_dump(ExamHelper::getTakeTypes());
         $exam->typeName = ExamHelper::getTakeTypes()->first(function($value, int $key) use($exam){
             return $value['id'] == $exam->type;
         })['text'];
