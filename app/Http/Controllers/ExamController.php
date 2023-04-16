@@ -13,6 +13,7 @@ use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Candidate;
 use App\Helpers\CommonHelper;
+use App\Helpers\ExamHelper;
 
 class ExamController extends Controller
 {
@@ -22,6 +23,16 @@ class ExamController extends Controller
         $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
         $candidates = Candidate::where('exam_id', $examId)
             ->get();
+        // $exam->typeName = $exam->type == 1
+        //     ? 'Anonymous'
+        //     : 'Authorized';
+        var_dump(ExamHelper::getTakeTypes());
+        $exam->typeName = ExamHelper::getTakeTypes()->first(function($value, int $key) use($exam){
+            return $value['id'] == $exam->type;
+        })['text'];
+        $exam->displayName = ExamHelper::getDisplayTypes()->first(function ($value, int $key) use ($exam){
+            return $value['id'] == $exam->display;
+        })['text'];
         return view('exam.show', compact('exam', 'linkUrl', 'candidates'));
     }
     
@@ -32,7 +43,9 @@ class ExamController extends Controller
     public function create($paperId)
     {
         $paper = Paper::find($paperId);
-        return view("exam.create", compact('paper'));
+        $displayTypes = ExamHelper::getDisplayTypes();
+        $takeTypes = ExamHelper::getTakeTypes();
+        return view("exam.create", compact('paper', 'displayTypes', 'takeTypes'));
     }
 
     public function store(Request $request)

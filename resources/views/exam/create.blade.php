@@ -30,8 +30,9 @@
                 <div class="col-sm-8">
                     <select id="type" class="form-control type" name="type" value="{{ old('type') }}" required
                         autofocus autocomplete="off">
-                        <option value="1">Anonymous</option>
-                        <option value="2">Authorized</option>
+                        @foreach($takeTypes as $dt)
+                        <option value="{{$dt['id']}}">{{$dt['text']}}</option>
+                        @endforeach
                     </select>
                     @if ($errors->has('type'))
                         <span class="help-block">
@@ -47,9 +48,9 @@
                 <div class="col-sm-8">
                     <select id="display" class="form-control display" name="display" value="{{ old('display') }}" required
                         autofocus autocomplete="off">
-                        <option value="1">All Question in a Single Page</option>
-                        <option value="2">One Question at a time</option>
-                        <option value="3">Grouping. One Question at a time</option>
+                        @foreach($displayTypes as $dt)
+                        <option value="{{$dt['id']}}">{{$dt['text']}}</option>
+                        @endforeach
                     </select>
                     @if ($errors->has('display'))
                         <span class="help-block">

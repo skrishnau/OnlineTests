@@ -39,7 +39,9 @@
                 <br/>
                 Ended On: <b class="lblEndDatetime">{{$exam->end_datetime}}</b>
                 <br/>
-                Type: 
+                Take Type: <b>{{$exam->typeName}}</b>
+                <br/>
+                Display Type: <b>{{$exam->displayName}}</b>
             </div>
             
 
