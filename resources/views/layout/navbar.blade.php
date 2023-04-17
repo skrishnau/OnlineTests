@@ -18,15 +18,17 @@
 						<a class="nav-link">Take Test</a>
 					</li>
 				@else
-					<li class="nav-item">
-						<a class="nav-link">Papers</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link">Exams</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link">Sessions</a>
-					</li>
+					@teacher
+						<li class="nav-item">
+							<a class="nav-link">Papers</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">Exams</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link">Sessions</a>
+						</li>
+					@endteacher
 				@endguest
 			</ul>
 
@@ -46,11 +48,12 @@
 						</li>
 					@endif
 				@else
+					@teacher
 					<form class="d-flex me-4" role="search">
 						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 						<button class="btn btn-outline-success" type="submit">Search</button>
 					</form>
-				  
+					@endteacher
 					<li class="nav-item dropdown">
 						<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 							{{ Auth::user()->name }}

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
+use App\Http\Middleware\Teacher;
+
 use App\Models\Paper;
 use App\Models\Question;
 use App\Models\Exam;
@@ -15,7 +17,11 @@ use App\Helpers\PaperHelper;
 
 class PaperController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware(Teacher::class);
+    }
+    
     public function index()
     {
         $papers = PaperHelper::getAllPapers();

@@ -18,9 +18,14 @@ use App\Http\Controllers\AnswerController;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/unauthorized', function(){
+    return view('layout.unauthorized');
+})->name("unauthorized");
+
 Route::get('/paper', [PaperController::class, 'index'])->name('paper.index');
 Route::get('/paper/create', [PaperController::class, 'create'])->name('paper.create');
 Route::get('/paper/edit/{id}', [PaperController::class, 'edit'])->name('paper.edit');

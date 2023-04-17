@@ -17,6 +17,11 @@ use App\Helpers\ExamHelper;
 
 class ExamController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function show($examId)
     {
         $exam = Exam::find($examId);

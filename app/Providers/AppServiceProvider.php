@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\Blade;
+
+use App\Helpers\UserHelper;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // blade directive 'teacher'
+        Blade::if('teacher', function () {
+            return UserHelper::isTeacher(auth()->user());
+        });
     }
 }

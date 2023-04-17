@@ -13,6 +13,11 @@ use App\Helpers\CommonHelper;
 
 class QuestionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function create($paperId, $questionId)
     {
         $paper = Paper::find($paperId);
