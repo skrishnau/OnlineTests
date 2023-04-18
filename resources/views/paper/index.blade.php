@@ -4,11 +4,13 @@
     Question Paper
 @endsection
 
+@section('heading')
+Question Papers
+@endsection
+
 @section('content')
         <div class="col-md-12">
-
             <div>
-                <h3 class="float-start">Question Papers</h3>
                 <div class="float-end">
                     <a href="{{route('paper.create')}}" class="btn btn-primary">Add New Question Paper</a>
                 </div>

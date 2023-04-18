@@ -4,12 +4,16 @@
     {{$paper->name}}
 @endsection
 
+@section('heading')
+Create Exam
+@endsection
+
+
 @section('content')
 
 <div class="col-md-12">
     <div class="box box-info float-none pad ">
         <form method="POST" action="{{route('exam.store')}}" class="formExamCreate">
-            <h4>Create Exam</h4>
             <input type="hidden" value="{{$paper->id}}" class="paperId" />
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} clearfix mt-4">
                 <label for="name" class="col-sm-4 control-label">Examination Name <i class="text-danger">*</i></label>

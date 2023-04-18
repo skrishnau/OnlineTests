@@ -51,15 +51,13 @@
                     @include('layout.leftmenubar')
                 @show
             </div>  --}}
-            <div class="col-md-10 offset-md-1 bg-light pe-3">
-                <div class="row card ">
+            <div class="col-md-10 offset-md-1 bg-light" style="padding-left: 0; padding-right:0;">
+                <div class="card ">
                     @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
-                        <div class=" card-header bg-dark text-light">
-                            {{-- <h3>
+                        <div class="card-header bg-dark bg-gradient text-light">
+                            <h5>
                                 @yield('heading')
-                            </h3> --}}
-                            BreadCrum goes here
-                            <a class="text-light" href="{{route("paper.index")}}">All Papers</a>
+                            </h5>
                         </div>
                     @endif
                     <div class="card-body content">

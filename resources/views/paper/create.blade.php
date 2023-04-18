@@ -4,14 +4,13 @@
     Question Paper
 @endsection
 
+
+@section('heading')
+{{isset($paper)? "Edit" : "Create"}} Question Paper
+@endsection
+
 @section('content')
         <div class="col-md-8">
-
-            <div>
-                <h3 class="float-start">{{isset($paper)? "Edit" : "Create"}} Question Paper</h3>
-                <div class="clearfix"></div>
-            </div>
-
             <div class="box box-info clearfix pad mt-4">
                 <form action="/paper/store" method="POST">
                     {{-- {!! Form::open(array('route'=>'paper.store' ))!!} --}}

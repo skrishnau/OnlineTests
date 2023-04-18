@@ -4,6 +4,10 @@
     {{$paper->name}}
 @endsection
 
+@section('heading')
+{{$paper['name']}}
+@endsection
+
 @section('content')
 
     @php
@@ -12,10 +16,9 @@
     <input type="hidden" id="paperId" value="{{$paper['id']}}"/>
         <div class="col-md-12">
             <div>
-                <h3 class="float-start">{{$paper['name']}}</h3>
                 <div class="float-start ms-3">
                     <a class="btn btn-outline-info addQuestion" type="button" href="{{route('paper.edit', ['id'=> $paper->id])}}" title="Edit Paper">
-                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-pencil"></i> Edit
                     </a>
                 </div>
                 <div class="float-end">
