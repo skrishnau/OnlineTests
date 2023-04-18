@@ -86,11 +86,15 @@ class AnswerController extends Controller
         }
         
         foreach($data['answers'] as $ans){
+            $isCorrect = isset($ans['optionId']) 
+                ? Option::where('id', $ans['optionId'])->where('is_correct', 1)->count() > 0
+                : null;
             $answerEntity = Answer::create([
                 'candidate_id' => $candidate->id,
                 'question_id' => $ans['questionId'],
                 'selected_option_id' => isset($ans['optionId']) ? $ans['optionId'] : null,
-                'answer_text' => isset($ans['optionId']) ? null : (isset($ans['answerText']) ? $ans['answerText'] : null)
+                'answer_text' => isset($ans['optionId']) ? null : (isset($ans['answerText']) ? $ans['answerText'] : null),
+                'is_correct' => $isCorrect
             ]);
         }
         

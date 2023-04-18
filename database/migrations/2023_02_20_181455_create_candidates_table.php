@@ -28,7 +28,7 @@ class CreateCandidatesTable extends Migration
             $table->string('candidate_id')->nullable(); // if there's id then store it
             $table->string('candidate_email')->nullable(); // if there's id then store it
             
-            // TODO: need to implement - examination by logged in users
+            // TODO: V2 - need to implement - examination by logged in users
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
 

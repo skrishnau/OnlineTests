@@ -26,6 +26,13 @@ class CreateAnswersTable extends Migration
             
             $table->text('answer_text')->nullable(); // answer in text format
 
+            // need to have 'is_correct' column in this table too.
+            //  cause for answer_text the teacher marks the correctness of answer later so we need to store it 
+            //  also for selected_option_id, it best to indicate the correctness in this table such 
+            //    that we need to query options table to get scores
+            // Values: null-> not graded yet, 1-> correct answer, 0 -> incorrect answer
+            $table->boolean('is_correct')->nullable();
+
             $table->timestamps();
         });
     }
