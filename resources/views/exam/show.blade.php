@@ -4,6 +4,10 @@
     {{$exam->paper->name}}
 @endsection
 
+@section('heading')
+{{$exam->paper->name}}
+@endsection
+
 @section('content')
     <input type="hidden" id="paperId" value="{{$exam->paper->id}}"/>
     <input type="hidden" id="examId" value="{{$exam->id}}"/>
@@ -11,7 +15,6 @@
             <div>
                 <div class="float-start">
                     <h3 class="">{{$exam->course->name}}</h3>
-                    <h5 class="">{{$exam->paper->name}}</h5>
                 </div>
                 <div class="float-end">
                     <?php 
@@ -47,9 +50,12 @@
 
             <div class="box box-info clearfix pad mt-4">
                 <h4>Candidates</h4>
-                <button type="button" class="btn btn-primary" >
+                {{-- <button type="button" class="btn btn-primary" >
                     Add New Candidate
-                </button>
+                </button> --}}
+                <div class="text-muted">
+                    Candidates appear here after they take exam.
+                </div>
                 <table class="table table-hover">
                     <tr>
                         <th>S.No.</th>

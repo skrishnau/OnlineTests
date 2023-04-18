@@ -20,7 +20,7 @@
 				@else
 					@teacher
 						<li class="nav-item">
-							<a class="nav-link">Papers</a>
+							<a class="nav-link" href="{{route('paper.index')}}">Papers</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link">Exams</a>

@@ -73,8 +73,8 @@
                                                     </div>
                                                     @foreach($que->options as $opt)
                                                         <div class="ms-4">
-                                                            <div class="float-start">
-                                                                <input type="radio" name="que_{{$que->id}}" value="none"/>
+                                                            <div class="float-start {{$opt->is_correct ? "bg-success" : ""}}">
+                                                                <input type="radio" name="que_{{$que->id}}" value="none" title="{{$opt->is_correct ? "Correct" : ""}}"/>
                                                             </div>
                                                             <div class="float-start ms-3">
                                                                 {!! html_entity_decode($opt->description) !!}

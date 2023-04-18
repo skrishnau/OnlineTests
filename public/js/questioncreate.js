@@ -91,6 +91,13 @@ function saveQuestion(e){
             options.push(answer);
         }
     });
+    if(options.length > 0){
+        if(!options.some((item)=>item.isCorrect == 'yes')){
+            notify('error', 'At least one option must be maked as "correct"!');
+            unblockWindow();
+            return;
+        }
+    }
 
     let data = {
         "id": id,
