@@ -75,7 +75,7 @@
                             <a class="text-decoration-none " href="{{route('candidate.show', ['id' => $item->id])}}">{{$item->candidate_name}}</a>
                         </td>
                         <td>
-                            {{$item->score}}
+                            {{$item->score??0}}
                         </td>
                         <td>
                             {{$item->startDatetime}}

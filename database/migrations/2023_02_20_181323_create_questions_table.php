@@ -22,6 +22,7 @@ class CreateQuestionsTable extends Migration
             $table->longText('description'); // question description
             $table->string('tag', 20)->nullable(); // for searches only
             $table->string('group')->nullable(); // v2. to group the questions 
+            $table->smallInteger('marks');
             $table->timestamps();
         });
     }

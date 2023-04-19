@@ -31,6 +31,11 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+
+            <div>
+                Each Question Tentative Marks: {{$paper->each_marks}}<br/>
+                Total Marks: {{$questions->sum('marks')}}
+            </div>
             
 
             <div class="box box-info clearfix pad ">
@@ -86,6 +91,9 @@
                                                 </div>
                                             </td>
                                             <td class="divQuestionAction" style="width:200px;">
+                                                <div class="text-muted">
+                                                    Marks: {{$que->marks}}
+                                                </div>
                                                 @if($canEdit)
                                                     <a class="btn btn-outline-info editQuestion" href="{{route('question.create', ['paperId'=> $paper->id, 'questionId'=> $que->id])}}"  title="Edit Question">
                                                         <i class="bi bi-pencil"></i>

@@ -30,6 +30,20 @@
                             @endif
                         </div>
                     </div>
+                    <div class="mt-3 form-group{{ $errors->has('each_marks') ? ' has-error' : '' }} clearfix">
+                        <label for="eachMarks" class="col-sm-8 control-label">Each Question Marks <small class="text-muted">(Can be changed in each question)</small></label>
+
+                        <div class="col-sm-8">
+                            <input id="eachMarks" type="text" class="form-control" name="eachMarks" value="{{ old('each_marks', $paper?->each_marks) }}" required
+                                autofocus autocomplete="off">
+
+                            @if ($errors->has('each_marks'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('each_marks') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="clearfix pad"></div>
                     <div align="right">
                         <button type="submit" class="btn btn-primary">Save</button>

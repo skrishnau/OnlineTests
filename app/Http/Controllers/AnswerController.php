@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Candidate;
 use App\Models\Answer;
 use App\Models\Paper;
+use App\Models\Option;
 
 class AnswerController extends Controller
 {

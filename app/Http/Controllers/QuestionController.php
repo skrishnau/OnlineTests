@@ -70,6 +70,7 @@ class QuestionController extends Controller
                 'tag' => $data['tag'],
                 'group' => $data['group'],
                 'paper_id' => $data['paperId'],
+                'marks' => $data['marks'],
             ]
         );
         if(!$isEdit) {

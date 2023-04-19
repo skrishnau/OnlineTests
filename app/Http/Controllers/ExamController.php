@@ -27,6 +27,7 @@ class ExamController extends Controller
         $exam = Exam::find($examId);
         $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
         $candidates = Candidate::where('exam_id', $examId)
+            ->selectRaw('candidates.*, (select sum(questions.marks) from answers inner join questions on answers.question_id = questions.id where answers.candidate_id = candidates.id and answers.is_correct = 1) as score')
             ->get();
         $exam->typeName = ExamHelper::getTakeTypes()->first(function($value, int $key) use($exam){
             return $value['id'] == $exam->type;

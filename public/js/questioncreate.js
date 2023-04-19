@@ -73,6 +73,7 @@ function saveQuestion(e){
     const paperId = $form.find("#paperId")?.val();
     const tag = $form.find("#tag")?.val();
     const group = $form.find("#group")?.val();
+    const marks = $form.find("#marks")?.val();
     const question = questionEditor.getData();//CKEDITOR.instances['editorQuestion'].getData();
     const options= [];
     $(".optionSection").each((index, value)=> {
@@ -104,6 +105,7 @@ function saveQuestion(e){
         "paperId": paperId,
         "tag": tag,
         "group": group,
+        "marks": marks,
         "description": question,
         "options": options
     };

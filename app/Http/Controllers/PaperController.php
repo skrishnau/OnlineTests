@@ -84,11 +84,13 @@ class PaperController extends Controller
                 ['id' => $data["id"]],
                 [
                     "name" => $data["name"],
+                    "each_marks" => $data["eachMarks"],
                 ]
             );
         } else {
             $paper = Paper::create([
                 "name" => $data["name"],
+                "each_marks" => $data["eachMarks"],
             ]);
         }
         return redirect()->route('paper.show', $paper->id);

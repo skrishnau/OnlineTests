@@ -35,7 +35,20 @@
                 <input type="hidden" id="paperId" name="paperId" value="{{$paper->id}}" />
                 <input type="hidden" id="id" name="id" value="{{$question?$question->id:0}}" /> 
                 
-                
+                <div class="form-group{{ $errors->has('marks') ? ' has-error' : '' }} clearfix">
+                    <label for="marks" class="col-sm-4 control-label">Marks</label>
+
+                    <div class="col-sm-8">
+                        <input id="marks" type="text" class="form-control" name="marks" value="{{ old('marks', isset($question?->marks) ? $question?->marks : $paper->each_marks) }}" 
+                            autofocus autocomplete="off">
+
+                        @if ($errors->has('marks'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('marks') }}</strong>
+                                    </span>
+                        @endif
+                    </div>
+                </div>
 
                 <div class="form-group{{ $errors->has('group') ? ' has-error' : '' }} clearfix">
                     <label for="group" class="col-sm-4 control-label">Group</label>
