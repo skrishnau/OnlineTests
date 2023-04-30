@@ -5,6 +5,7 @@ use App\Http\Controllers\PaperController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\CandidateController;
 
 
 /*
@@ -48,7 +49,7 @@ Route::get('/answer/create/{examId}', [AnswerController::class, 'create'])->name
 Route::post('/answer/store', [AnswerController::class, 'store'])->name('answer.store');
 Route::get('/answer/success/{examId}', [AnswerController::class, 'success'])->name('answer.success');
 
-Route::get('/candidate/show/{id}', [CandidateController::class, 'success'])->name('candidate.show');
+Route::get('/candidate/show/{id}', [CandidateController::class, 'show'])->name('candidate.show');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');
 

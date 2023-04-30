@@ -18,10 +18,12 @@ class AnswerController extends Controller
         $show = $request->input('show');
         
         $isPreview = false;
+        $isAnswer = false;
         // NOTE: in case of examination we should not show breadcrumbs and other links of the site
         $showBreadCrumbs = true;
         $exam = null;
         $paper = null;
+        $candidate = new Candidate;
         if($show == null){
             $exam = Exam::where('id', $examId)->first();
             if(!$exam){
@@ -53,14 +55,29 @@ class AnswerController extends Controller
             $exam->name = "Sample Exam";
             $exam->display = 1;
             $exam->type = 1;
+        } else if($show == 'answer'){
+            $isAnswer = true;
+            $candidate = Candidate::find($request->input('candidateId'));
+            $exam = $candidate->exam;
+            $paper = $exam->paper;
+            $showBreadCrumbs = false;
         } else {
             $message = 'Not found!';
             return view('layout.error', compact('message'));
         }
-        $questions = Question::where('paper_id', $paper->id)
-            ->orderBy('serial_number', 'asc')
+        $questions = Question::where('paper_id', $paper->id);
+        if($show == 'answer'){
+            $questions = $questions->leftJoin('answers', 'questions.id', '=', 'answers.question_id')
+            ->where('answers.candidate_id', $request->input('candidateId'))
+            ->select('questions.*', 'answers.candidate_id', 'answers.selected_option_id', 'answers.is_correct', 'answers.answer_text')
+            ->get()
+            ;
+        } else {
+            $questions = $questions->orderBy('serial_number', 'asc')
             ->get();
-        return view('answer.create', compact('exam', 'paper', 'questions', 'isPreview', 'showBreadCrumbs'));
+        }
+        
+        return view('answer.create', compact('exam', 'paper', 'candidate', 'questions', 'isPreview', 'isAnswer', 'showBreadCrumbs'));
     }
 
     public function store(Request $request)
@@ -78,8 +95,8 @@ class AnswerController extends Controller
         if($exam->type == 1){
             // anonymous
             $candidate = Candidate::create([
-                'candidate_name' => $data['candidateName'],
-                'candidate_email' => $data['candidateEmail'],
+                'name' => $data['candidateName'],
+                'email' => $data['candidateEmail'],
                 'exam_id' => $data['examId'],
             ]);
         } else {

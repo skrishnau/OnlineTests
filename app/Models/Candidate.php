@@ -11,5 +11,9 @@ class Candidate extends Model
 
     protected $guarded = [];
 
+    public function exam()
+    {
+        return $this->belongsTo(\App\Models\Exam::class);
+    }
     
 }

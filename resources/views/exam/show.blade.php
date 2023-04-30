@@ -72,7 +72,7 @@
                             {{$sn}}
                         </td>
                         <td>
-                            <a class="text-decoration-none " href="{{route('candidate.show', ['id' => $item->id])}}">{{$item->candidate_name}}</a>
+                            <a class="text-decoration-none " href="{{route('candidate.show', ['id' => $item->id])}}">{{$item->name}}</a>
                         </td>
                         <td>
                             {{$item->score??0}}

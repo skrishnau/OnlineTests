@@ -38,6 +38,11 @@ $(document).ready(function(){
 
     $(".examNext").on("click", examNext);
     $(".examPrevious").on("click", examPrevious);
+    if($(".isAnswer").val() == "1"){
+        $("input").prop("disabled", "disabled");
+        $(".divNextPrevious").remove();
+        $(".divSubmit").remove();
+    }
     
 });
 

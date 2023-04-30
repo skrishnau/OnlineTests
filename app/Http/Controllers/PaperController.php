@@ -45,7 +45,7 @@ class PaperController extends Controller
             ->orderBy('start_datetime')
             ->select('exams.*', 'courses.name as name')
             ->get();
-        $canEdit = $paper->start_datetime == null;
+        $canEdit = $exams->whereNotNull('start_datetime')->count() == 0;
 
         return view('paper.show', compact('paper', 'questions', 'exams', 'canEdit'));
     }

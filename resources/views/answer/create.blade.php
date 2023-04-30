@@ -11,6 +11,7 @@
         <input type="hidden" class="paperId" value="{{$paper->id}}"/>
         <input type="hidden" class="examId" value="{{$exam->id}}"/>
         <input type="hidden" class="displayId" value="{{$exam->display}}"/>
+        <input type="hidden" class="isAnswer" value="{{$isAnswer}}"/>
         @php($isSingleDisplay = $exam->display == 2 || $exam->display == 3)
         <input type="hidden" class="isSingleDisplay" value="{{$isSingleDisplay}}" />
         @if($isPreview)
@@ -43,9 +44,10 @@
                 <div class="queSection" data-index = '{{$sectionIndex}}'>
                     {{-- Anonymous type --}}
                     <div class="form-group{{ $errors->has('candidateName') ? ' has-error' : '' }} clearfix">
-                        <label for="candidateName" class="col-sm-4 control-label">Name</label>
+                        <label for="candidateName" class="col-sm-4 control-label">Name {{$candidate->name}}</label>
                         <div class="col-sm-8">
-                            <input id="candidateName" type="text" class="form-control candidateName" name="candidateName" value="{{ old('candidateName') }}" required
+                            
+                            <input id="candidateName" type="text" class="form-control candidateName" name="candidateName" value="{{ old('candidateName', $candidate->name) }}" required
                                 autofocus autocomplete="off">
                             @if ($errors->has('candidateName'))
                                 <span class="help-block">
@@ -57,7 +59,7 @@
                     <div class="form-group{{ $errors->has('candidateEmail') ? ' has-error' : '' }} clearfix">
                         <label for="candidateEmail" class="col-sm-4 control-label">Email</label>
                         <div class="col-sm-8">
-                            <input id="candidateEmail" type="text" class="form-control candidateEmail" name="candidateEmail" value="{{ old('candidateEmail') }}" required
+                            <input id="candidateEmail" type="text" class="form-control candidateEmail" name="candidateEmail" value="{{ old('candidateEmail', $candidate->email) }}" required
                                 autofocus autocomplete="off">
                             @if ($errors->has('candidateEmail'))
                                 <span class="help-block">
@@ -108,14 +110,24 @@
                             <div class="clearfix"></div>
                         </div>
                         @if(isset($que->options) && sizeof($que->options) > 0)
-                            <?php $hasMultipleRightAnswers = $que->options->where('is_correct', 1)->count() > 1; ?>
+                            <?php $hasMultipleRightAnswers = $que->options->where('is_correct', 1)->count() > 1; 
+                            
+                            ?>
                             @foreach($que->options as $opt)
-                                <div class="form-check ms-5 optionRow">
-                                    <div class="float-start">
+                            <?php $isSelected = $opt->id == $que->selected_option_id;
+                            $isCorrectAnswer = $que->is_correct && $isSelected;
+                            ?>
+                                <div class="form-check ms-5 optionRow ">
+                                    {{-- @if($isCorrectAnswer)
+                                    <div class="float-start bg-success border border-2 border-success">
+                                        &nbsp;  &nbsp;  &nbsp;  &nbsp;
+                                    </div> 
+                                    @endif --}}
+                                    <div class="float-start {{$isCorrectAnswer ? "p-1 bg-success border border-1 border-success" : ""}}">
                                         @if(!$hasMultipleRightAnswers)
-                                            <input class="form-check-input" type="radio" name="que_{{$que->id}}" value="{{$opt->id}}"/>
+                                            <input class="form-check-input" type="radio" name="que_{{$que->id}}" value="{{$opt->id}}" {{$isSelected ? "checked": ""}}/>
                                         @else
-                                            <input class="form-check-input" type="checkbox" name="que_{{$que->id}}" value="{{$opt->id}}"/>
+                                            <input class="form-check-input" type="checkbox" name="que_{{$que->id}}" value="{{$opt->id}}"  {{$isSelected ? "checked": ""}}/>
                                         @endif
                                     </div>
                                     <div class="float-start ms-1">

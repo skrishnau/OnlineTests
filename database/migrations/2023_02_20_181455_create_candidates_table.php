@@ -24,9 +24,9 @@ class CreateCandidatesTable extends Migration
             $table->dateTime('start_datetime')->nullable();
             $table->dateTime('end_datetime')->nullable();
 
-            $table->string('candidate_name')->nullable();
-            $table->string('candidate_id')->nullable(); // if there's id then store it
-            $table->string('candidate_email')->nullable(); // if there's id then store it
+            $table->string('name')->nullable(); // candidate name
+            //$table->string('roll_id')->nullable(); // if there's id then store it
+            $table->string('email')->nullable(); // if there's id then store it
             
             // TODO: V2 - need to implement - examination by logged in users
             $table->unsignedBigInteger('user_id')->nullable();
