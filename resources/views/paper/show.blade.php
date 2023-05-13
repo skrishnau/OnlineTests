@@ -41,15 +41,82 @@
             <div class="box box-info clearfix pad ">
                 <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="question-tab" data-bs-toggle="tab" data-bs-target="#question" type="button" role="tab" aria-controls="question" aria-selected="true">Questions</button>
+                        <button class="nav-link active" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam" type="button" role="tab" aria-controls="exam" aria-selected="true">Exams</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam" type="button" role="tab" aria-controls="exam" aria-selected="false">Exams</button>
+                      <button class="nav-link" id="question-tab" data-bs-toggle="tab" data-bs-target="#question" type="button" role="tab" aria-controls="question" aria-selected="false">Questions</button>
                     </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
+
+                    {{-- Exam --}}
+                    <div class="tab-pane fade show active" id="exam" role="tabpanel" aria-labelledby="exam-tab">
+                        <div class="divExams">
+                            <h4>Examinations</h4>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th style="width:40%;">Class/Course Name </th>
+                                    <th>Start DateTime</th>
+                                    <th>End DateTime</th>
+                                    <th>Duration(mins.)</th>
+                                    <th>Action</th>
+                                </tr>
+                                @php
+                                $notStarted = $exams->whereNull('start_datetime');
+                                $active = $exams->whereNotNull('start_datetime')->whereNull('end_datetime');
+                                $ended = $exams->whereNotNull('start_datetime')->whereNotNull('end_datetime');
+                                $sn = 1;
+                                @endphp
+                                @if($notStarted->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-primary">
+                                            Not Started
+                                        </th>
+                                    </tr>
+                                    @foreach($notStarted as $item)
+                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                    @php($sn++)
+                                    @endforeach
+                                @endif
+            
+                                @if($active->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-success">
+                                            Active
+                                        </th>
+                                    </tr>
+                                    {{-- @php($sn = 1) --}}
+                                    @foreach($active as $item)
+                                        @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                        @php($sn++)
+                                    @endforeach
+                                @endif
+            
+                                @if($ended->count() > 0)
+                                    <tr>
+                                        <th colspan="6" class="text-danger">
+                                            Ended
+                                        </th>
+                                    </tr>
+                                    {{-- @php($sn = 1) --}}
+                                    @foreach($ended as $item)
+                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
+                                    @php($sn++)
+                                    @endforeach
+                                @endif
+
+                                @foreach($exams as $item)
+                               
+                                @php($sn++)
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+
+
                     {{-- Questions --}}
-                    <div class="tab-pane fade show active" id="question" role="tabpanel" aria-labelledby="question-tab">
+                    <div class="tab-pane fade" id="question" role="tabpanel" aria-labelledby="question-tab">
                         <h4>Questions</h4>
                         <div class="mt-4">
                             @if($canEdit)
@@ -115,70 +182,7 @@
                         </div>
                     </div>
 
-                    {{-- Exam --}}
-                    <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
-                        <div class="divExams">
-                            <h4>Examinations</h4>
-                            <table class="table table-hover">
-                                <tr>
-                                    <th>S.No.</th>
-                                    <th style="width:40%;">Class/Course Name </th>
-                                    <th>Start DateTime</th>
-                                    <th>End DateTime</th>
-                                    <th>Duration(mins.)</th>
-                                    <th>Action</th>
-                                </tr>
-                                @php
-                                $notStarted = $exams->whereNull('start_datetime');
-                                $active = $exams->whereNotNull('start_datetime')->whereNull('end_datetime');
-                                $ended = $exams->whereNotNull('start_datetime')->whereNotNull('end_datetime');
-                                $sn = 1;
-                                @endphp
-                                @if($notStarted->count() > 0)
-                                    <tr>
-                                        <th colspan="6" class="text-primary">
-                                            Not Started
-                                        </th>
-                                    </tr>
-                                    @foreach($notStarted as $item)
-                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
-                                    @php($sn++)
-                                    @endforeach
-                                @endif
-            
-                                @if($active->count() > 0)
-                                    <tr>
-                                        <th colspan="6" class="text-success">
-                                            Active
-                                        </th>
-                                    </tr>
-                                    {{-- @php($sn = 1) --}}
-                                    @foreach($active as $item)
-                                        @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
-                                        @php($sn++)
-                                    @endforeach
-                                @endif
-            
-                                @if($ended->count() > 0)
-                                    <tr>
-                                        <th colspan="6" class="text-danger">
-                                            Ended
-                                        </th>
-                                    </tr>
-                                    {{-- @php($sn = 1) --}}
-                                    @foreach($ended as $item)
-                                    @include('paper.showcomp.rowitem', ['item' => $item, 'sn' => $sn])
-                                    @php($sn++)
-                                    @endforeach
-                                @endif
-
-                                @foreach($exams as $item)
-                               
-                                @php($sn++)
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
+                    
                   </div>
             </div>
         </div>
