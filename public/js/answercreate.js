@@ -25,20 +25,12 @@ $(document).ready(function(){
 
     showTimer();
 
-    const isSingleDisplay = $(".isSingleDisplay").val() && $(".isAnswer").val() != "1";
-    if(isSingleDisplay == true){
-        // show one at a time
-        const queSections = $(".queSection").hide();
-        $(".divNextPrevious").show();
-        $(".divSubmit").hide();
-        examNext();
-    } else {
-        $(".divNextPrevious").remove();
-        $(".divSubmit").show();
-    }
+    toggleDisplay();
+    // $(".btnToggleDisplay").on("click", ()=>{
+    //     $(".isSingleDisplay").val("true"); 
+    //     toggleDisplay(false);
+    // });
 
-    $(".examNext").on("click", examNext);
-    $(".examPrevious").on("click", examPrevious);
     if($(".isAnswer").val() == "1"){
         $("input").prop("disabled", "disabled");
         $(".divNextPrevious").remove();
@@ -163,6 +155,16 @@ function moveToAnotherQuestion(moveIndex){
     } else {
         $(".examPrevious").prop("disabled", "");
     }
+    // group indication
+    const groupBtn = $(".divGroupButtons").find(`[data-group="${another.attr("data-group")}"]`);
+    if(groupBtn.length > 0){
+        $(".divGroupButtons").find(".btnGroup").removeClass("active");
+        groupBtn.addClass("active");
+    } else {
+        $(".divGroupButtons").find(".btnGroup").removeClass("active");
+        $(".divGroupButtons").children(":first").addClass("active");
+    }
+
 }
 function startExam(){
     blockWindow();
@@ -179,4 +181,20 @@ function startExam(){
         $(".confirmSection").hide();
         $(".examSection").show();
     })
+}
+function toggleDisplay(){
+    const isSingleDisplay = $(".isSingleDisplay").val() == "true" && $(".isAnswer").val() != "1";
+    if(isSingleDisplay == true){
+        // show one at a time
+        const queSections = $(".queSection").hide();
+        $(".divNextPrevious").show();
+        $(".divSubmit").hide();
+        examNext();
+    } else {
+        $(".divNextPrevious").hide();
+        $(".divSubmit").show();
+    }
+
+    $(".examNext").unbind("click").on("click", examNext);
+    $(".examPrevious").unbind("click").on("click", examPrevious);
 }

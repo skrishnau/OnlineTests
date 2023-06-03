@@ -33,3 +33,12 @@
   .row-link{
     cursor:pointer;
   }
+
+  .vertical-text{
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+  .vertical-button{
+    padding:0px 3px 0px 3px !important;
+
+  }
