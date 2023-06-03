@@ -23,6 +23,7 @@ Users
                         <th>S.No.</th>
                         <th style="width:40%;">Name </th>
                         <th>Role</th>
+                        <th>Email</th>
                         <th>Action</th>
                     </tr>
                     @php($sn=1)
@@ -36,6 +37,9 @@ Users
                             </td>
                             <td>
                                 {{$item->role}}
+                            </td>
+                            <td>
+                                {{$item->email}}
                             </td>
                             <td>
                                 <a href="{{route('user.show', ['id' => $item->id])}}">View</a>

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Paper;
 use App\Models\Question;
 use App\Models\Exam;
 use App\Models\Answer;
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Candidate;
 use App\Helpers\CommonHelper;
 use App\Helpers\ExamHelper;
@@ -26,8 +28,10 @@ class ExamController extends Controller
     {
         $exam = Exam::find($examId);
         $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
-        $candidates = Candidate::where('exam_id', $examId)
-            ->selectRaw('candidates.*, (select sum(questions.marks) from answers inner join questions on answers.question_id = questions.id where answers.candidate_id = candidates.id and answers.is_correct = 1) as score')
+        $candidates = Candidate::leftJoin('users', 'candidates.user_id', '=', 'users.id')
+            ->where('exam_id', $examId)
+            ->selectRaw('IF(users.id is null, candidates.name, users.name) as name, IF(users.id is null, candidates.email, users.email) as email, candidates.id, candidates.exam_id,candidates.start_datetime,candidates.end_datetime,
+            (select sum(questions.marks) from answers inner join questions on answers.question_id = questions.id where answers.candidate_id = candidates.id and answers.is_correct = 1) as score')
             ->get();
         $exam->typeName = ExamHelper::getTakeTypes()->first(function($value, int $key) use($exam){
             return $value['id'] == $exam->type;
@@ -144,6 +148,39 @@ class ExamController extends Controller
             ]
         ]);
     }
-
-
+    // api
+    public function getAllStudents($examId)
+    {
+        //return response()->json(['exam'=>$examId]);
+        $users = User::leftJoin('candidates', function($join) use ($examId){
+            $join->on('users.id', '=', 'candidates.user_id')
+                ->where('candidates.exam_id', $examId);
+            })
+            ->where('users.role', 'student')
+            ->selectRaw('users.id,users.name,users.email,IF(candidates.id is null, 0, 1) as isCandidate')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fetched',
+            'data' => $users->toArray()
+        ]);
+    }
+    public function addStudents(Request $request)
+    {
+        $data = $request->all();
+        Candidate::where('exam_id', $data['examId'])->delete();
+        $arr = [];
+        foreach($data['students'] as $x => $val) {
+            $arr[] = [
+                'exam_id' => $data['examId'],
+                'user_id' => $val
+            ];
+          }
+        DB::table('candidates')->insert($arr);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully added!',
+        ]);
+        
+    }
 }

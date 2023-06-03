@@ -49,17 +49,20 @@
             
 
             <div class="box box-info clearfix pad mt-4">
-                <h4>Candidates</h4>
-                {{-- <button type="button" class="btn btn-primary" >
-                    Add New Candidate
-                </button> --}}
+                <h4>Students</h4>
+                @if($canShowStartBtn && $exam->type == 2) 
+                {{-- students can be added manually if tape is Authorized (2) --}}
+                    <button type="button" class="btn btn-primary btnAddStudents" >
+                        Add Students
+                    </button>
+                @endif
                 <div class="text-muted">
                     Candidates appear here after they take exam.
                 </div>
                 <table class="table table-hover">
                     <tr>
                         <th>S.No.</th>
-                        <th style="width:40%;">Candidates </th>
+                        <th style="width:40%;">Students </th>
                         <th>Score</th>
                         <th>Start DateTime</th>
                         <th>Duration(mins.)</th>
@@ -124,6 +127,25 @@
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary endTest">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="studentListModal" tabindex="-1" aria-labelledby="studentListModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="studentListModalLabel">Choose Students</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="tblStudentList">
+                        
+                    </table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btnStudentsSelected">Add</button>
                 </div>
             </div>
         </div>

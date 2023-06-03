@@ -33,7 +33,7 @@ Create Exam
                 <label for="name" class="col-sm-4 control-label">Take Type<i class="text-danger">*</i></label>
                 <div class="col-sm-8">
                     <select id="type" class="form-control type" name="type" value="{{ old('type') }}" required
-                        autofocus autocomplete="off" disabled>
+                        autofocus autocomplete="off">
                         @foreach($takeTypes as $dt)
                         <option value="{{$dt['id']}}">{{$dt['text']}}</option>
                         @endforeach

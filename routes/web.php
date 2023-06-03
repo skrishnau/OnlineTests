@@ -44,6 +44,8 @@ Route::get('/exam/create/{paperId}', [ExamController::class, 'create'])->name('e
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 Route::post('/exam/startTest', [ExamController::class, 'startTest'])->name('exam.startTest');
 Route::post('/exam/endTest', [ExamController::class, 'endTest'])->name('exam.endTest');
+Route::get('/exam/getAllStudents/{examId}', [ExamController::class, 'getAllStudents'])->name('exam.getAllStudents');
+Route::post('/exam/addStudents', [ExamController::class, 'addStudents'])->name('exam.addStudents');
 
 
 Route::get('/answer/create/{examId}', [AnswerController::class, 'create'])->name('answer.create');
@@ -58,7 +60,7 @@ Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 Route::get('/user/show/{id}', [UserController::class, 'show'])->name('user.show');
-
+// update later to a search query
 
 
 Auth::routes();

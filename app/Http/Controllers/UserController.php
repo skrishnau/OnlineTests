@@ -74,13 +74,13 @@ class UserController extends Controller
     }
 
     // api
-    public function list($role)
-    {
-        $users = User::where('role', $role)->get();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Fetched',
-            'data' => $users->toArray()
-        ]);
-    }
+    // public function list($role)
+    // {
+    //     $users = User::where('role', $role)->get();
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Fetched',
+    //         'data' => $users->toArray()
+    //     ]);
+    // }
 }
