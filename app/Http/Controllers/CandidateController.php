@@ -43,7 +43,7 @@ class CandidateController extends Controller
                 candidates.end_datetime as endDatetime')
             
             ->get();
-        //    var_dump($exams);
+           
         return view('candidate.exams', compact('exams'));
     }
 }

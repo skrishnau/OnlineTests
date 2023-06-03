@@ -22,6 +22,7 @@ function startTest(){
             $('#startModal').modal('hide'); 
             $(".btnStartExam").remove();
             $(".btnEndExam").show();
+            $(".btnAddStudents").hide();
             $(".lblStartDatetime").text(response.data.startDatetime);
             removeAllActionButtons();
         } 

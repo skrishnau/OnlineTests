@@ -30,7 +30,7 @@ class ExamController extends Controller
         $linkUrl = ExamController::getExamUrl($exam->id, $exam->link_id);
         $candidates = Candidate::leftJoin('users', 'candidates.user_id', '=', 'users.id')
             ->where('exam_id', $examId)
-            ->selectRaw('IF(users.id is null, candidates.name, users.name) as name, IF(users.id is null, candidates.email, users.email) as email, candidates.id, candidates.exam_id,candidates.start_datetime,candidates.end_datetime,
+            ->selectRaw('IF(users.id is null, candidates.name, users.name) as name, IF(users.id is null, candidates.email, users.email) as email, candidates.id, candidates.exam_id,candidates.start_datetime as startDatetime,candidates.end_datetime as endDatetime,
             (select sum(questions.marks) from answers inner join questions on answers.question_id = questions.id where answers.candidate_id = candidates.id and answers.is_correct = 1) as score')
             ->get();
         $exam->typeName = ExamHelper::getTakeTypes()->first(function($value, int $key) use($exam){

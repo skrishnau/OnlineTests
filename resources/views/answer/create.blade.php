@@ -12,8 +12,13 @@
         <input type="hidden" class="examId" value="{{$exam->id}}"/>
         <input type="hidden" class="displayId" value="{{$exam->display}}"/>
         <input type="hidden" class="isAnswer" value="{{$isAnswer}}"/>
-        @php($isSingleDisplay = $exam->display == 2 || $exam->display == 3)
+        <input type="hidden" class="startDatetime" value="{{$candidate?->startDatetime}}"/>
+        <input type="hidden" class="candidateId" value="{{$candidate?->id}}"/>
+        @php
+            $isSingleDisplay = (($exam->display === 2) || ($exam->display === 3)) ? "true" : "false";
+        @endphp
         <input type="hidden" class="isSingleDisplay" value="{{$isSingleDisplay}}" />
+        
         @if($isPreview)
             <div class="mb-1 text-center bg-warning">
                 Examination Preview
@@ -37,8 +42,16 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        @php($sectionIndex = 0)
-        <div class="box box-info float-none pad ">
+
+        <?php 
+        $sectionIndex = 0;
+        $showConfirm = !$isPreview && !$isAnswer;
+        ?>
+
+        <div class="box box-info float-none pad confirmSection text-center" style="{{$showConfirm ? "" : "display:none;"}}">
+            <button class="btn btn-success btnStartExam">Start Exam</button>
+        </div>
+        <div class="box box-info float-none pad examSection" style="{{$showConfirm ? "display:none;" : ""}}">
             <div class="col-md-12 mt-5">
                 @if($exam->type == 1)
                 <div class="queSection" data-index = '{{$sectionIndex}}'>

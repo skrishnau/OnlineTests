@@ -24,8 +24,9 @@ $(document).ready(function(){
     $(".examSubmit").on("click", examSubmit);
 
     showTimer();
-    const isSingleDisplay =$(".isSingleDisplay").val();
-    if(isSingleDisplay == "true"){
+
+    const isSingleDisplay = $(".isSingleDisplay").val() && $(".isAnswer").val() != "1";
+    if(isSingleDisplay == true){
         // show one at a time
         const queSections = $(".queSection").hide();
         $(".divNextPrevious").show();
@@ -43,6 +44,8 @@ $(document).ready(function(){
         $(".divNextPrevious").remove();
         $(".divSubmit").remove();
     }
+
+    $(".btnStartExam").on("click", startExam);
     
 });
 
@@ -62,16 +65,19 @@ function examSubmit(){
     var paperId = $(".paperId").val();
     var examId = $(".examId").val();
     let candidateName = $(".candidateName").val();
-    //let candidateId = $(".candidateId").val();
     let candidateEmail = $(".candidateEmail").val();
     var isValid = true;
-    if(!candidateName){
-        isValid = false;
-        notify("error", "Name is required");
-    }
-    if(!candidateEmail){
-        isValid = false;
-        notify("error", "Email is required");
+    const candidateId = $(".candidateId").val();
+    const startDatetime = $(".startDatetime").val();
+    if(!candidateId){
+        if(!candidateName){
+            isValid = false;
+            notify("error", "Name is required");
+        }
+        if(!candidateEmail){
+            isValid = false;
+            notify("error", "Email is required");
+        }
     }
 
     if(!isValid){
@@ -113,10 +119,11 @@ function examSubmit(){
     let data = {
         "paperId": paperId,
         "examId": examId,
-        //"candidateId": candidateId,
         "candidateName": candidateName,
         "candidateEmail": candidateEmail,
-        "answers": answers
+        "candidateId": candidateId,
+        "startDatetime": startDatetime,
+        "answers": answers,
     };
     $.post("/answer/store", (data), function(response){
         unblockWindow();
@@ -156,4 +163,20 @@ function moveToAnotherQuestion(moveIndex){
     } else {
         $(".examPrevious").prop("disabled", "");
     }
+}
+function startExam(){
+    blockWindow();
+    const data = {
+        'examId': $(".examId").val()
+    };
+    $.post('/answer/start', data, function(response){
+        notify(response.status, response.message);
+        unblockWindow();
+        if(response.status != 'success'){
+            return;
+        }
+        $("#startDatetime").val(response.data.startDatetime);
+        $(".confirmSection").hide();
+        $(".examSection").show();
+    })
 }

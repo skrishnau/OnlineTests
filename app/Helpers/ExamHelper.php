@@ -8,6 +8,9 @@ use Illuminate\Support\Collection;
 
 class ExamHelper
 {
+    public const ANONYMOUS = 1;
+    public const AUTHORIZED = 2;
+
     public static function getTakeTypes()
     {
         return collect 

@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('dashboard');
 Route::get('/unauthorized', function(){
     return view('layout.unauthorized');
 })->name("unauthorized");
@@ -51,6 +51,8 @@ Route::post('/exam/addStudents', [ExamController::class, 'addStudents'])->name('
 Route::get('/answer/create/{examId}', [AnswerController::class, 'create'])->name('answer.create');
 Route::post('/answer/store', [AnswerController::class, 'store'])->name('answer.store');
 Route::get('/answer/success/{examId}', [AnswerController::class, 'success'])->name('answer.success');
+Route::post('/answer/start', [AnswerController::class, 'start'])->name('answer.start');
+
 
 Route::get('/candidate/show/{id}', [CandidateController::class, 'show'])->name('candidate.show');
 Route::get('/candidate/exams', [CandidateController::class, 'exams'])->name('candidate.exams');
