@@ -53,6 +53,7 @@ Route::post('/answer/store', [AnswerController::class, 'store'])->name('answer.s
 Route::get('/answer/success/{examId}', [AnswerController::class, 'success'])->name('answer.success');
 
 Route::get('/candidate/show/{id}', [CandidateController::class, 'show'])->name('candidate.show');
+Route::get('/candidate/exams', [CandidateController::class, 'exams'])->name('candidate.exams');
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');
 

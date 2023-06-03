@@ -27,7 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // blade directive 'teacher'
+        // blade directive 'student'
+        Blade::if('student', function () {
+            return UserHelper::isStudent(auth()->user());
+        });
+        // // blade directive 'teacher'
         Blade::if('teacher', function () {
             return UserHelper::isTeacher(auth()->user());
         });

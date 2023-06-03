@@ -11,5 +11,9 @@ class UserHelper
         return $user && $user->role == 'teacher';
     }
 
+    public static function isStudent($user)
+    {
+        return $user && $user->role == 'student';
+    }
 
 }
