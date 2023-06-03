@@ -6,6 +6,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -53,6 +54,15 @@ Route::get('/candidate/show/{id}', [CandidateController::class, 'show'])->name('
 
 //Route::get('/paper', 'App\Http\Controllers\PaperController@index');
 
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+Route::get('/user/show/{id}', [UserController::class, 'show'])->name('user.show');
+
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
