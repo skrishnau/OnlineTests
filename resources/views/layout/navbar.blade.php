@@ -11,9 +11,8 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<!-- Left Side Of Navbar -->
-			<ul class="navbar-nav me-auto">
+			{{-- <ul class="navbar-nav me-auto">
 				@guest
-					{{-- anonymous users --}}
 					<li class="nav-item">
 						<a class="nav-link">Take Test</a>
 					</li>
@@ -30,7 +29,7 @@
 						</li>
 					@endteacher
 				@endguest
-			</ul>
+			</ul> --}}
 
 			<!-- Right Side Of Navbar -->
 			<ul class="navbar-nav ms-auto">
@@ -48,6 +47,7 @@
 						</li>
 					@endif
 				@else
+				
 					@teacher
 					<form class="d-flex me-4" role="search">
 						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

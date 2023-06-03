@@ -21,9 +21,37 @@
 </div> --}}
 
 {{-- SETUP --}}
-<div class="text-uppercase bg-secondary text-light" style="padding-top: 1px; width: 100%;">
+<div class="text-uppercase text-light" style="padding-top: 1px; width: 100%;">
 	{{-- <div class="card-header bg-dark text-light">Papers</div> --}}
-	<div class="">Papers</div>
+	<ul class="nav flex-column">
+		@guest
+			<li class="nav-item">
+				<a class="nav-link">Take Test</a>
+			</li>
+		@else
+			 @student
+				<li class="nav-item">
+					<a class="nav-link" href="{{route('candidate.exams')}}">My Exams</a>
+				</li>
+			@endstudent
+
+			@teacher
+				<li class="nav-item">
+					<a class="nav-link" href="{{route('paper.index')}}">Papers</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link">Exams</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link">Sessions</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{route('user.index')}}">Users</a>
+				</li>
+			@endteacher
+		@endguest
+	</ul>
+	{{-- <div class="">Papers</div>
 	<div class="list-group">
 	</div>
 	<div class="">Exams</div>
@@ -31,8 +59,8 @@
 	</div>
 	<div class="">Candidates</div>
 	<div class="list-group">
-	</div>
-	<div class="list-group">
+	</div>--}}
+	<div class="list-group"> 
 	{{--<a class="list-group-item {{$controller == 'questionpaper' ? 'list-group-item-success':''}}" href="{{route('questionpaper.index')}}">Question Papers</a>--}}
 		{{-- <a class="list-group-item list-group-item-secondary {{$controller == 'school' ? 'list-group-item-success':''}}" href="{{route('school.index')}}">Schools</a>
 		<a class="list-group-item {{$controller == 'subject' ? 'list-group-item-success':''}}" href="{{route('subject.index')}}">Subjects</a>

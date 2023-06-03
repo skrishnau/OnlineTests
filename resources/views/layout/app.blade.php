@@ -51,7 +51,14 @@
                     @include('layout.leftmenubar')
                 @show
             </div>  --}}
-            <div class="col-md-10 offset-md-1 bg-light" style="padding-left: 0; padding-right:0;">
+            <div class="col-md-2" id="sticky-sidebar">
+                <div class="sticky-top text-white">
+                    @section('leftmenubar')
+                    @include('layout.leftmenubar')
+                @show
+                </div>
+            </div>
+            <div class="col-md-10  bg-light" style="padding-left: 0; padding-right:0;">
                 <div class="card ">
                     @if(!isset($showBreadCrumbs) || $showBreadCrumbs)
                         <div class="card-header bg-dark bg-gradient text-light">
